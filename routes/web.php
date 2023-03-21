@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\KadenaController;
+use App\Http\Controllers\SalaryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
+Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
+
 Route::get('/kadenciya', function () {
-    return view('kadenciya'); });
+    return view('kadenciya'); })->name('old.php');
+    Route::get('/create', [KadenaController::class, 'create'])->name('kadena.create');
