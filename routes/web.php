@@ -27,5 +27,6 @@ Route::get('/kadenciya', function () {
 
 Route::get('/cadence/index', [CadenceController::class, 'index'])->name('cadences.index');
 Route::get('/cadence/create', [CadenceController::class, 'create'])->name('cadence.create');
+Route::get('/cadence/create/{id}', [CadenceController::class, 'edit'])->name('cadence.edit');
 Route::post('/cadence/create', [CadenceController::class, 'store'])->name('cadence.store');
 Route::delete('/cadence/{id}/delete', [CadenceController::class, 'delete'])->name('cadence.delete');

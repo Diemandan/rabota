@@ -22,11 +22,10 @@ class CadenceRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'id' => 'required|integer',
-            'daily_rate' => 'sometimes|required_if:id,0',
-            'start' => 'sometimes|required_if:id,0',
-            'finish' => 'sometimes|required_if:id,0',
+            'status_finish' => 'required',
+            'daily_rate' => 'required',
+            'start' => 'required',
+            'finish' => 'required',
         ];
     }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('cadences', function (Blueprint $table) {
             $table->id();
-            $table->integer('daily rate')->default(75);
-            $table->boolean('status finish')->default(0);
+            $table->integer('daily_rate')->default(75);
+            $table->boolean('status_finish')->default(0);
             $table->date('start');
             $table->date('finish');
             $table->timestamps();

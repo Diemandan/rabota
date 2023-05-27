@@ -20,19 +20,25 @@ class CadenceService
 
     }
 
-
     public function getCadences(): LengthAwarePaginator
     {
         return $this->cadenceRepository->getCadences();
     }
 
+
+    public function getCadence($id)
+    {
+        return $this->cadenceRepository->find($id);
+    }
+
     public function create(CadenceRequest $request): void
     {
         $data = $request->except('_token');
-        if ($request->input('id') === 0) {
-            $this->cadenceRepository->create($data);
-        } else {
+
+        if ($request->input('id')) {
             $this->cadenceRepository->update($data);
+        } else {
+            $this->cadenceRepository->create($data);
         }
     }
 

@@ -10,7 +10,7 @@
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Оплата в сутки</th>
-                <th>СТатус каденции</th>
+                <th>Статус каденции</th>
                 <th></th>
             </tr>
             </thead>
@@ -21,10 +21,10 @@
                     <td>{{ $cadence->start }}</td>
                     <td>{{ $cadence->finish }}</td>
                     <td>{{ $cadence->daily_rate }}</td>
-                    <td>{{ $cadence->status_finish }}</td>
+                    <td>{{ ($cadence->status_finish == 0) ? 'не завершена' : 'завершена' }}</td>
                     <td>
                         <div class="d-flex flex-row bd-highlight mb-3">
-                            <a href="{{ route('cadence.create', $cadence->id) }}"
+                            <a href="{{ route('cadence.edit', $cadence->id) }}"
                                class="btn btn-sm btn-primary">Edit</a>
                             <form action="{{ route('cadence.delete', $cadence->id) }}" method="POST"
                                   style="display: inline-block;">
@@ -47,7 +47,7 @@
             </div>
             <div class="pagination justify-content-center">
                 {{ $cadences->links('pagination::bootstrap-4') }}
-                </div>
             </div>
         </div>
+    </div>
 @endsection
