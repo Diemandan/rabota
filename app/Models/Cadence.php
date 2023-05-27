@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Cadence extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'daily_rate',
+        'status_finish',
+        'start',
+        'finish',
+    ];
+
+
 }

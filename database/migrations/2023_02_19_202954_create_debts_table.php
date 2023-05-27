@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->bigInteger('cadence_id');
             $table->integer('debt');
             $table->timestamps();
         });

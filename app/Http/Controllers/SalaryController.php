@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salary;
+use App\Services\CadenceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class SalaryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): Response
+
+
+    public function index()
     {
         return view('salaries.index');
     }
@@ -20,7 +20,7 @@ class SalaryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create()
     {
         //
     }
@@ -28,40 +28,11 @@ class SalaryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Salary $salary): Response
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Salary $salary): Response
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Salary $salary): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Salary $salary): RedirectResponse
-    {
-        //
-    }
 }

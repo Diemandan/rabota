@@ -57,6 +57,16 @@
             </div>
         </header>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
         <div class="container-fluid">
             <div class="row">
                 <nav style="height: calc(100vh - 48px);" id="sidebarMenu" class="col-3 col-lg-2 d-md-block bg-light sidebar">

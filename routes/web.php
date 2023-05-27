@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\KadenaController;
+use App\Http\Controllers\CadenceController;
 use App\Http\Controllers\SalaryController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +22,10 @@ Route::get('/', function () {
 Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
 
 Route::get('/kadenciya', function () {
-    return view('kadenciya'); })->name('old.php');
-    Route::get('/create', [KadenaController::class, 'create'])->name('kadena.create');
+    return view('kadenciya');
+})->name('home');
+
+Route::get('/cadence/index', [CadenceController::class, 'index'])->name('cadences.index');
+Route::get('/cadence/create', [CadenceController::class, 'create'])->name('cadence.create');
+Route::post('/cadence/create', [CadenceController::class, 'store'])->name('cadence.store');
+Route::delete('/cadence/{id}/delete', [CadenceController::class, 'delete'])->name('cadence.delete');
