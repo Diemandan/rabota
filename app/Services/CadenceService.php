@@ -20,14 +20,19 @@ class CadenceService
 
     protected BonusService $bonusService;
 
+    protected ExpenseService $expenseService;
+
     public function __construct(
         CadenceRepository $repository,
         SalaryService     $salaryService,
-        BonusService      $bonusService)
+        BonusService      $bonusService,
+        ExpenseService    $expenseService)
     {
         $this->cadenceRepository = $repository;
         $this->salaryService = $salaryService;
         $this->bonusService = $bonusService;
+        $this->expenseService = $expenseService;
+
 
     }
 
@@ -82,15 +87,16 @@ class CadenceService
 
     public function getTotalDebt(Model $cadence): int
     {
-
         $salariesSum = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
         $bonusSum = $this->bonusService->getBonusSumForCadence($cadence->id);
+        $expensesSum = $this->expenseService->getExpenseSumForCadence($cadence->id);
 
-        $startDate = Carbon::parse($cadence->start);
-        $endDate = Carbon::parse($cadence->finish);
+        $startDate = Carbon::parse($cadence->start, 2);
+        $endDate = Carbon::parse($cadence->finish, 2);
 
         $days = $endDate->diffInDays($startDate) + 1;
-        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt + $bonusSum) - $salariesSum;
+
+        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt + $bonusSum + $expensesSum) - $salariesSum;
 
         return $totalBalance;
     }

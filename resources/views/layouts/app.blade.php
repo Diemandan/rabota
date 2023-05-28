@@ -60,7 +60,14 @@
         </div>
     @endif
 
-        <div class="container-fluid">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+
+    <div class="container-fluid">
             <div class="row">
                 <nav style="height: calc(100vh - 48px);" id="sidebarMenu" class="col-3 col-lg-2 d-md-block bg-light sidebar">
                     <div class="position-sticky pt-3 sidebar-sticky">
