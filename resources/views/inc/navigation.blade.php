@@ -6,13 +6,13 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">
                             <span data-feather="home"></span>
-                            Old php version
+                            Старая версия
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('salary.index')}}">
                             <span data-feather="file"></span>
-                            Salary
+                            Переводы
                         </a>
                     </li>
                     <li class="nav-item">
@@ -24,21 +24,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span data-feather="users"></span>
-                            Customers
+                            Покупки за свои
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span data-feather="bar-chart-2"></span>
-                            Reports
+                            Остатки
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="layers"></span>
-                            Integrations
-                        </a>
-                    </li>
+
                 </ul>
 
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Salary extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'cadence_id',
+        'transfer_date',
+        'transfer_amount'
+    ];
+
+
+    public function cadence()
+    {
+        $this->belongsTo(Cadence::class);
+    }
 }

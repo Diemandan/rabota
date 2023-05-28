@@ -25,7 +25,7 @@ class CadenceController extends Controller
     public function show($id)
     {
         $cadence = $this->cadenceService->getCadence($id);
-        return view('cadence.show', compact($cadence));
+        return view('cadence.show', compact('cadence'));
     }
 
     public function create()

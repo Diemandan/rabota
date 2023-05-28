@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Cadence;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 
 class CadenceRepository
 {
@@ -28,14 +29,14 @@ class CadenceRepository
         $model->update($data);
     }
 
-    public function find($id): Cadence
+    public function find($id): Model
     {
-        return $this->model->find($id);
+        return $this->model->with('salaries')->find($id);
     }
 
     public function getCadences(): LengthAwarePaginator
     {
-        return $this->model->paginate(self::PER_PAGE);
+        return $this->model->with('salaries')->paginate(self::PER_PAGE);
     }
 
     public function delete($id)

@@ -16,5 +16,10 @@ class Cadence extends Model
         'finish',
     ];
 
+    public function salaries()
+    {
+       return $this->hasMany(Salary::class);
+    }
+
 
 }

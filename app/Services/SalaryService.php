@@ -1,0 +1,48 @@
+<?php
+
+
+namespace App\Services;
+
+use App\Http\Requests\CadenceRequest;
+use App\Models\Salary;
+use App\Repositories\cadenceRepository;
+use App\Repositories\SalaryRepository;
+use Carbon\Carbon;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Session\Store;
+
+class SalaryService
+{
+    protected SalaryRepository $salaryRepository;
+
+    public function __construct(SalaryRepository $repository)
+    {
+        $this->salaryRepository = $repository;
+
+    }
+
+    public function getSalariesSumByCadenceId(int $id): int
+    {
+        return $this->salaryRepository->findSalariesSumForCadence($id);
+    }
+
+//    public function create(CadenceRequest $request): void
+//    {
+//        $data = $request->except('_token');
+//
+//        if ($request->input('id')) {
+//            $this->cadenceRepository->update($data);
+//        } else {
+//            $this->cadenceRepository->create($data);
+//        }
+//    }
+
+    public function delete($id): void
+    {
+        $this->cadenceRepository->delete($id);
+    }
+
+}

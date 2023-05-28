@@ -25,7 +25,7 @@ class CadenceRequest extends FormRequest
             'status_finish' => 'required',
             'daily_rate' => 'required',
             'start' => 'required',
-            'finish' => 'required',
+            'finish' => 'required_if:status_finish,1',
         ];
     }
 }
