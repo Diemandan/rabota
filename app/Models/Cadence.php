@@ -18,7 +18,7 @@ class Cadence extends Model
 
     public function salaries()
     {
-       return $this->hasMany(Salary::class);
+        return $this->hasMany(Salary::class);
     }
 
     public function debt()
@@ -26,5 +26,9 @@ class Cadence extends Model
         return $this->hasOne(Debt::class);
     }
 
+    public function bonuses()
+    {
+        return $this->hasMany(Bonus::class);
+    }
 
 }

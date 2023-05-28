@@ -37,12 +37,12 @@ class CadenceRepository
 
     public function getLatest()
     {
-        return $this->model->with('debt')->latest()->first();
+        return $this->model->with('debt', 'bonuses')->latest()->first();
     }
 
     public function getCadences(): LengthAwarePaginator
     {
-        return $this->model->with('salaries', 'debt')->paginate(self::PER_PAGE);
+        return $this->model->with('salaries', 'debt', 'bonuses')->paginate(self::PER_PAGE);
     }
 
     public function delete($id)

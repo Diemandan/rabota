@@ -18,10 +18,16 @@ class CadenceService
 
     protected SalaryService $salaryService;
 
-    public function __construct(CadenceRepository $repository, SalaryService $salaryService)
+    protected BonusService $bonusService;
+
+    public function __construct(
+        CadenceRepository $repository,
+        SalaryService     $salaryService,
+        BonusService      $bonusService)
     {
         $this->cadenceRepository = $repository;
         $this->salaryService = $salaryService;
+        $this->bonusService = $bonusService;
 
     }
 
@@ -78,12 +84,13 @@ class CadenceService
     {
 
         $salariesSum = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
+        $bonusSum = $this->bonusService->getBonusSumForCadence($cadence->id);
 
         $startDate = Carbon::parse($cadence->start);
         $endDate = Carbon::parse($cadence->finish);
 
         $days = $endDate->diffInDays($startDate) + 1;
-        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt) - $salariesSum;
+        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt + $bonusSum) - $salariesSum;
 
         return $totalBalance;
     }
