@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('daily_rate')->default(75);
             $table->boolean('status_finish')->default(0);
             $table->date('start');
-            $table->date('finish');
+            $table->date('finish')->nullable();
             $table->timestamps();
         });
     }

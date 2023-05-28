@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('cadence_id');
             $table->date('payment_date');
             $table->integer('payment_amount');
             $table->text('description');
             $table->timestamps();
+
+            $table->foreign('cadence_id')->references('id')->on('cadences')->onDelete('cascade');
+
         });
     }
 

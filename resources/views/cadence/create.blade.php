@@ -52,7 +52,7 @@
                 <label for="finish">Конец каденции</label>
                 <input type="date" class="form-control @error('finish') is-invalid @enderror" id="finish" name="finish"
                        value="{{ old('finish', isset($cadence) ? $cadence->finish : '') }}"
-                       @if(!isset($cadence)) required @endif>
+                       @if(isset($cadence)) required @endif>
                 @error('finish')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

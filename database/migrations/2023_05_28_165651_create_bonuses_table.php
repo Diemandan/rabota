@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('debts', function (Blueprint $table) {
+        Schema::create('bonuses', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
             $table->unsignedBigInteger('cadence_id');
-            $table->integer('debt');
+            $table->date('transfer_date');
+            $table->integer('transfer_amount');
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('cadence_id')->references('id')->on('cadences')->onDelete('cascade');
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('debts');
+        Schema::dropIfExists('bonuses');
     }
 };

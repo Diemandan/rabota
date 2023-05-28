@@ -30,7 +30,7 @@ class CadenceService
         $cadences = $this->cadenceRepository->getCadences();
 
         foreach ($cadences as $cadence) {
-            $cadence->totalBalance = $this->getTotalBalance($cadence);
+            $cadence->totalBalance = $this->getTotalDebt($cadence);
         }
 
         return $cadences;
@@ -45,7 +45,7 @@ class CadenceService
             $totalSalary += $salary->transfer_amount;
         }
         $cadence->totalAmount = $totalSalary;
-        $cadence->totalBalance = $this->getTotalBalance($cadence);
+        $cadence->totalBalance = $this->getTotalDebt($cadence);
 
 
         return $cadence;
@@ -58,6 +58,13 @@ class CadenceService
         if ($request->input('id')) {
             $this->cadenceRepository->update($data);
         } else {
+            $debtDate = Carbon::parse($data['start'])->subDay()->toDateString();
+
+            $latestCadence = $this->cadenceRepository->getLatest();
+
+            $data['debt'] = $this->getTotalDebt($latestCadence);
+            $data['date'] = $debtDate;
+
             $this->cadenceRepository->create($data);
         }
     }
@@ -67,7 +74,7 @@ class CadenceService
         $this->cadenceRepository->delete($id);
     }
 
-    public function getTotalBalance(Model $cadence): int
+    public function getTotalDebt(Model $cadence): int
     {
 
         $salariesSum = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
@@ -76,7 +83,7 @@ class CadenceService
         $endDate = Carbon::parse($cadence->finish);
 
         $days = $endDate->diffInDays($startDate) + 1;
-        $totalBalance = ($days * $cadence->daily_rate) - $salariesSum;
+        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt) - $salariesSum;
 
         return $totalBalance;
     }
