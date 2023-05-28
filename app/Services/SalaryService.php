@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Http\Requests\CadenceRequest;
+use App\Http\Requests\SalaryRequest;
 use App\Models\Salary;
 use App\Repositories\cadenceRepository;
 use App\Repositories\SalaryRepository;
@@ -29,16 +30,18 @@ class SalaryService
         return $this->salaryRepository->findSalariesSumForCadence($id);
     }
 
-//    public function create(CadenceRequest $request): void
-//    {
-//        $data = $request->except('_token');
-//
-//        if ($request->input('id')) {
-//            $this->cadenceRepository->update($data);
-//        } else {
-//            $this->cadenceRepository->create($data);
-//        }
-//    }
+    public function getAll(): LengthAwarePaginator
+    {
+        return $this->salaryRepository->all();
+    }
+
+    public function create(SalaryRequest $request): void
+    {
+        $data = $request->except('_token');
+
+            $this->salaryRepository->create($data);
+
+    }
 
     public function delete($id): void
     {

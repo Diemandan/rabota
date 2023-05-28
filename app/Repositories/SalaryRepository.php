@@ -17,6 +17,10 @@ class SalaryRepository
         $this->model = $model;
     }
 
+    public function all(): LengthAwarePaginator
+    {
+        return $this->model->with('cadence')->paginate(self::PER_PAGE);
+    }
 
     public function create(array $data)
     {
@@ -27,11 +31,6 @@ class SalaryRepository
     {
         $model = $this->model->find($data['id']);
         $model->update($data);
-    }
-
-    public function find($id): Model
-    {
-        return $this->model->with('cadence')->find($id);
     }
 
     public function findSalariesSumForCadence(int $id)

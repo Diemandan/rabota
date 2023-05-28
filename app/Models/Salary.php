@@ -18,6 +18,6 @@ class Salary extends Model
 
     public function cadence()
     {
-        $this->belongsTo(Cadence::class);
+        return $this->belongsTo(Cadence::class);
     }
 }

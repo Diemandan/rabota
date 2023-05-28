@@ -2,34 +2,40 @@
 
 @section('content')
 
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Обращение</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="container">
 
-  @endsection
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Период каденции</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Дата перевода</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach($salaries as $salary)
+                <tr>
+                    <th scope="row">{{ $loop->index + ($salaries->perPage() * ($salaries->currentPage() - 1)) + 1 }}</th>
+                    <td>с {{$salary->cadence->start}} по {{$salary->cadence->finish}}</td>
+                    <td>{{$salary->transfer_amount}}</td>
+                    <td>{{$salary->transfer_date}}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <a href="{{ route('salary.create') }}" class="btn btn-primary">Создать запись</a>
+            </div>
+            <div class="pagination justify-content-center">
+                {{ $salaries->links('pagination::bootstrap-4') }}
+            </div>
+        </div>
+
+    </div>
+
+@endsection

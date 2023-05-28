@@ -20,6 +20,8 @@ Route::get('/', function () {
 });
 
 Route::get('/salary', [SalaryController::class, 'index'])->name('salary.index');
+Route::get('/salary/create', [SalaryController::class, 'create'])->name('salary.create');
+Route::post('/salary/create', [SalaryController::class, 'store'])->name('salary.store');
 
 Route::get('/kadenciya', function () {
     return view('kadenciya');
