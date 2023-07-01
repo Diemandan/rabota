@@ -38,4 +38,9 @@ class BonusRepository
     {
         $this->model->destroy($id);
     }
+
+    public function all(): LengthAwarePaginator
+    {
+        return $this->model->with('cadence')->paginate(self::PER_PAGE);
+    }
 }

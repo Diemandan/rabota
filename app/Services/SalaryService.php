@@ -30,9 +30,9 @@ class SalaryService
         return $this->salaryRepository->findSalariesSumForCadence($id);
     }
 
-    public function getAll(): LengthAwarePaginator
+    public function getAll(?string $id = NULL): LengthAwarePaginator|Collection
     {
-        return $this->salaryRepository->all();
+        return $this->salaryRepository->salariesByCadenceId($id);
     }
 
     public function create(SalaryRequest $request): void
@@ -45,7 +45,7 @@ class SalaryService
 
     public function delete($id): void
     {
-        $this->cadenceRepository->delete($id);
+        $this->salaryRepository->delete($id);
     }
 
 }

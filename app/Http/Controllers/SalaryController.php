@@ -25,10 +25,14 @@ class SalaryController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $salaries = $this->salaryService->getAll();
-        return view('salaries.index', compact('salaries'));
+        $cadenceId = $request->cadence_id;
+        
+        $cadences = $this->cadenceRepository->getCadences();
+        $salaries = $this->salaryService->getAll($cadenceId);
+
+        return view('salaries.index', compact('salaries', 'cadences'));
     }
 
     /**
@@ -41,9 +45,6 @@ class SalaryController extends Controller
         return view('salaries.create', compact('cadences'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(SalaryRequest $request)
     {
         if ($request->validated()) {
@@ -53,6 +54,12 @@ class SalaryController extends Controller
         }
 
         return redirect()->back()->withErrors($request->errors())->withInput();
+    }
+
+    public function delete($id)
+    {
+        $this->salaryService->delete($id);
+        return redirect()->route('bonuses.index')->with('success', 'Payment deleted successfully.');
     }
 
 

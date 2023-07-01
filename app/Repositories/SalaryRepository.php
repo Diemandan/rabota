@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Salary;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class SalaryRepository
 {
@@ -17,9 +17,14 @@ class SalaryRepository
         $this->model = $model;
     }
 
-    public function all(): LengthAwarePaginator
+    public function salariesByCadenceId(?string $id): LengthAwarePaginator|Collection
     {
-        return $this->model->with('cadence')->paginate(self::PER_PAGE);
+        $query = $this->model->with('cadence');
+
+        if (!$id == NULL)
+            return $query->where('cadence_id', $id)->get();
+
+        return $query->paginate(self::PER_PAGE);
     }
 
     public function create(array $data)

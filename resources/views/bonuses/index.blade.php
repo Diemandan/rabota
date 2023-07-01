@@ -17,16 +17,16 @@
             </thead>
             <tbody>
 
-            @foreach($expenses as $expense)
+            @foreach($bonuses as $bonus)
                 <tr>
-                    <th scope="row">{{ $loop->index + ($expenses->perPage() * ($expenses->currentPage() - 1)) + 1 }}</th>
-                    <td>с {{$expense->cadence->start}} по {{$expense->cadence->finish}}</td>
-                    <td>{{$expense->payment_amount}}</td>
-                    <td>{{$expense->payment_date}}</td>
-                    <td>{{$expense->description}}</td>
+                    <th scope="row">{{ $loop->index + ($bonuses->perPage() * ($bonuses->currentPage() - 1)) + 1 }}</th>
+                    <td>с {{$bonus->cadence->start}} по {{$bonus->cadence->finish}}</td>
+                    <td>{{$bonus->transfer_amount}}</td>
+                    <td>{{$bonus->transfer_date}}</td>
+                    <td>{{$bonus->description}}</td>
                     <td>
                         <div class="d-flex flex-row bd-highlight mb-3">
-                            <form action="{{ route('expense.delete', $expense->id) }}" method="POST"
+                            <form action="{{ route('bonus.delete', $bonus->id) }}" method="POST"
                                   style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
@@ -40,15 +40,15 @@
             @endforeach
             </tbody>
         </table>
-@if($expenses->isEmpty())
+@if($bonuses->isEmpty())
 <h3> Что-нибудь да купим ещё. Не переживай </h3>
 @endif
         <div class="row mb-3">
             <div class="col-sm-6">
-                <a href="{{ route('expense.create') }}" class="btn btn-primary">Создать запись</a>
+                <a href="{{ route('bonus.create') }}" class="btn btn-primary">Создать запись</a>
             </div>
             <div class="pagination justify-content-center">
-                {{ $expenses->links('pagination::bootstrap-4') }}
+                {{ $bonuses->links('pagination::bootstrap-4') }}
             </div>
         </div>
 

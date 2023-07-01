@@ -10,7 +10,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('salary.index')}}">
+                        <a class="nav-link" href="{{route('salaries.index')}}">
                             <span data-feather="file"></span>
                             Переводы
                         </a>
@@ -28,9 +28,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{route('bonuses.index')}}">
                             <span data-feather="bar-chart-2"></span>
-                            Остатки
+                            Корректировки доходов
                         </a>
                     </li>
 

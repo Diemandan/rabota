@@ -15,10 +15,15 @@
     <div class="container">
         <h2>Начало: <span class="badge bg-primary">{{ $cadence->start }}</span></h2>
         <h2>Конец: <span class="badge bg-primary">{{ $cadence->finish }}</span></h2>
-        <h2>Оплата в сутки: <span class="badge bg-primary">{{ $cadence->daily_rate }} евро</span></h2>
+        <h2>Отработано за каденцию: <span class="badge bg-primary">{{ $cadence->totalDays }} дней</span></h2>
 
         <h4>Всего переведено за эту каденцию:
             <span class="badge bg-info"> {{$cadence->totalAmount}} евро
+            </span>
+        </h4>
+
+        <h4>Всего остаток:
+            <span class="badge bg-danger"> {{$cadence->totalBalance}} евро
             </span>
         </h4>
         <hr>

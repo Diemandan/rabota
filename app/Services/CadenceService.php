@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\Http\Requests\CadenceRequest;
+use App\Models\Cadence;
 use App\Repositories\cadenceRepository;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
@@ -42,6 +43,7 @@ class CadenceService
 
         foreach ($cadences as $cadence) {
             $cadence->totalBalance = $this->getTotalDebt($cadence);
+            $cadence->totalDays = $this->getTotalDays($cadence);
         }
 
         return $cadences;
@@ -51,13 +53,10 @@ class CadenceService
     public function getCadence($id)
     {
         $cadence = $this->cadenceRepository->find($id);
-        $totalSalary = 0;
-        foreach ($cadence->salaries as $salary) {
-            $totalSalary += $salary->transfer_amount;
-        }
-        $cadence->totalAmount = $totalSalary;
-        $cadence->totalBalance = $this->getTotalDebt($cadence);
 
+        $cadence->totalAmount = $cadence->salaries->sum('transfer_amount');
+        $cadence->totalBalance = $this->getTotalDebt($cadence);
+        $cadence->totalDays = $this->getTotalDays($cadence);
 
         return $cadence;
     }
@@ -90,14 +89,20 @@ class CadenceService
         $salariesSum = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
         $bonusSum = $this->bonusService->getBonusSumForCadence($cadence->id);
         $expensesSum = $this->expenseService->getExpenseSumForCadence($cadence->id);
+        $days = $this->getTotalDays($cadence);
 
+        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt + $bonusSum + $expensesSum) - $salariesSum;
+
+        return $totalBalance;
+    }
+
+    private function getTotalDays(Model $cadence): int
+    {
         $startDate = Carbon::parse($cadence->start, 2);
         $endDate = Carbon::parse($cadence->finish, 2);
 
         $days = $endDate->diffInDays($startDate) + 1;
 
-        $totalBalance = ($days * $cadence->daily_rate + $cadence->debt->debt + $bonusSum + $expensesSum) - $salariesSum;
-
-        return $totalBalance;
+        return $days;
     }
 }
