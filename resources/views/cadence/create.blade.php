@@ -62,7 +62,7 @@
         </form>
 
         <br>
-        <a href="{{route('home')}}" class="btn btn-primary mb-3">Назад</a>
+        <a href="{{route('cadences.index')}}" class="btn btn-primary mb-3">Назад</a>
     </div>
 
 @endsection

@@ -22,6 +22,11 @@
             </span>
         </h4>
 
+        <h3>Остаток на начало каденции:
+            <span class="badge bg-success"> {{$cadence->startDebt}} евро
+            </span>
+        </h3>
+
         <h4>Всего остаток:
             <span class="badge bg-danger"> {{$cadence->totalBalance}} евро
             </span>
@@ -29,9 +34,10 @@
         <hr>
 
         <h3>Начисления</h3>
-        <table class="table">
+        <table class="table table-secondary table-striped">
             <thead>
             <tr>
+                <th scope="col">#</th>
                 <th>Дата</th>
                 <th>Сумма в евро</th>
             </tr>
@@ -41,9 +47,39 @@
 
                 @foreach($cadence->salaries as $salary)
                     <tr>
-
+                        <th scope="row">{{ $loop->index + 1 }}</th>
                         <td>{{ $salary->transfer_date }}</td>
                         <td>{{ $salary->transfer_amount }}</td>
+
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="3">Зарплата еще не начислялась за эту каденцию</td>
+                </tr>
+            @endif
+            </tbody>
+        </table>
+
+        <h3>Покупки за свои</h3>
+        <table class="table table-secondary table-striped">
+            <thead>
+            <tr>
+                <th scope="row">#</th>
+                <th>Дата</th>
+                <th>Сумма в евро</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if(!$cadence->expenses->isEmpty())
+
+                @foreach($cadence->expenses as $expense)
+                    <tr>
+                        <th scope="row">{{ $loop->index + 1 }}</th>
+                        <td>{{ $expense->payment_date }}</td>
+                        <td>{{ $expense->payment_amount }}</td>
+                        <td>{{ $expense->description }}</td>
 
                     </tr>
                 @endforeach

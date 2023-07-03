@@ -18,13 +18,14 @@
             </ul>
         </header>
 
-        <table class="table">
+        <table class="table table-secondary table-striped">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Период каденции</th>
                     <th scope="col">Сумма</th>
                     <th scope="col">Дата перевода</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>

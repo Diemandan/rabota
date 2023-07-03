@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Http\Requests\CadenceRequest;
 use App\Models\Cadence;
 use App\Repositories\cadenceRepository;
+use App\Repositories\SalaryRepository;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -13,53 +14,26 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\Store;
 
-class CadenceService
+class StatisticService
 {
-    protected cadenceRepository $cadenceRepository;
-
-    protected SalaryService $salaryService;
-
-    protected BonusService $bonusService;
-
-    protected ExpenseService $expenseService;
-
     public function __construct(
-        CadenceRepository $repository,
-        SalaryService     $salaryService,
-        BonusService      $bonusService,
-        ExpenseService    $expenseService)
+       protected CadenceRepository $cadenceRepository,
+       protected SalaryRepository $salaryRepository,
+       protected BonusService $bonusService,
+       protected ExpenseService $expenseService)
     {
-        $this->cadenceRepository = $repository;
-        $this->salaryService = $salaryService;
-        $this->bonusService = $bonusService;
-        $this->expenseService = $expenseService;
-
-
-    }
-
-    public function getCadences(): LengthAwarePaginator
-    {
-        $cadences = $this->cadenceRepository->getCadences();
-
-        foreach ($cadences as $cadence) {
-            $cadence->totalBalance = $this->getTotalDebt($cadence);
-            $cadence->totalDays = $this->getTotalDays($cadence);
-        }
-
-        return $cadences;
     }
 
 
-    public function getCadence($id)
+    public function getTotalInfo()
     {
-        $cadence = $this->cadenceRepository->find($id);
+        $yearSalary = $this->salaryRepository->totalYearSalary()->sum('transfer_amount');
+        $totalDays = date('z') + 1;
 
-        $cadence->totalAmount = $cadence->salaries->sum('transfer_amount');
-        $cadence->totalBalance = $this->getTotalDebt($cadence);
-        $cadence->totalDays = $this->getTotalDays($cadence);
-        $cadence->startDebt = $cadence->debt->debt;
-
-        return $cadence;
+        return [
+            'totalSalary' => $yearSalary,
+            'totalDays' => $totalDays
+        ];
     }
 
     public function create(CadenceRequest $request): void

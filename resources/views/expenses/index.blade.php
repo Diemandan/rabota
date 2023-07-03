@@ -5,7 +5,7 @@
     <div class="container">
 
 
-        <table class="table">
+        <table class="table table-secondary table-striped">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -13,6 +13,7 @@
                 <th scope="col">Сумма</th>
                 <th scope="col">Дата перевода</th>
                 <th scope="col">Описание</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>

@@ -4,6 +4,7 @@ use App\Http\Controllers\BonusController;
 use App\Http\Controllers\CadenceController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\StatisticController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,3 +47,9 @@ Route::get('/cadence/create/{id}', [CadenceController::class, 'edit'])->name('ca
 Route::get('/cadence/show/{id}', [CadenceController::class, 'show'])->name('cadence.show');
 Route::post('/cadence/create', [CadenceController::class, 'store'])->name('cadence.store');
 Route::delete('/cadence/{id}/delete', [CadenceController::class, 'delete'])->name('cadence.delete');
+
+Route::get('/statistics/index', [StatisticController::class, 'index'])->name('statistics.index');
+
+Route::get('/statistics', function () {
+    return view('statistics/statistic');
+})->name('statistic');

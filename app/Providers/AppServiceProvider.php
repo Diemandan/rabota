@@ -6,14 +6,17 @@ use App\Models\Bonus;
 use App\Models\Cadence;
 use App\Models\Expense;
 use App\Models\Salary;
+use App\Models\Statistic;
 use App\Repositories\BonusRepository;
 use App\Repositories\CadenceRepository;
 use App\Repositories\ExpenseRepository;
 use App\Repositories\SalaryRepository;
+use App\Repositories\StatisticRepository;
 use App\Services\BonusService;
 use App\Services\CadenceService;
 use App\Services\ExpenseService;
 use App\Services\SalaryService;
+use App\Services\StatisticService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,6 +45,15 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(SalaryService::class),
                 $app->make(BonusService::class),
                 $app->make(ExpenseService::class),
+            );
+        });
+
+        $this->app->bind(StatisticService::class, function ($app) {
+            return new StatisticService(
+                $app->make(CadenceRepository::class),
+                $app->make(SalaryRepository::class),
+                $app->make(BonusService::class),
+                $app->make(ExpenseService::class)
             );
         });
     }

@@ -17,6 +17,11 @@ class SalaryRepository
         $this->model = $model;
     }
 
+    public function totalYearSalary()
+    {
+        return $this->model->where('transfer_date', '>=', date('Y-01-01'))->get();
+    }
+
     public function salariesByCadenceId(?string $id): LengthAwarePaginator|Collection
     {
         $query = $this->model->with('cadence');
