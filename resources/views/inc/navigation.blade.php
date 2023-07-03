@@ -33,6 +33,12 @@
                             Удержания
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('budgets.index')}}">
+                            <span data-feather="bar-chart-2"></span>
+                            Планирование бюджета
+                        </a>
+                    </li>
 
                 </ul>
 
@@ -49,12 +55,7 @@
                             Текущий месяц
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href={{route('statistic')}}>
-                            <span data-feather="file-text"></span>
-                            Средний годовой доход
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </nav>

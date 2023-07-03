@@ -28,7 +28,7 @@ class SalaryController extends Controller
     public function index(Request $request)
     {
         $cadenceId = $request->cadence_id;
-        
+
         $cadences = $this->cadenceRepository->getCadences();
         $salaries = $this->salaryService->getAll($cadenceId);
 
@@ -50,7 +50,7 @@ class SalaryController extends Controller
         if ($request->validated()) {
             $this->salaryService->create($request);
 
-            return redirect()->route('salary.index')->with('success', 'Salary added successfully.');
+            return redirect()->route('salaries.index')->with('success', 'Salary added successfully.');
         }
 
         return redirect()->back()->withErrors($request->errors())->withInput();
@@ -59,7 +59,7 @@ class SalaryController extends Controller
     public function delete($id)
     {
         $this->salaryService->delete($id);
-        return redirect()->route('bonuses.index')->with('success', 'Payment deleted successfully.');
+        return redirect()->route('salaries.index')->with('success', 'Salary deleted successfully.');
     }
 
 

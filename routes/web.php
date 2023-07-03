@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BonusController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CadenceController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SalaryController;
@@ -50,6 +51,8 @@ Route::delete('/cadence/{id}/delete', [CadenceController::class, 'delete'])->nam
 
 Route::get('/statistics/index', [StatisticController::class, 'index'])->name('statistics.index');
 
-Route::get('/statistics', function () {
-    return view('statistics/statistic');
-})->name('statistic');
+Route::get('/budget/index', [BudgetController::class, 'index'])->name('budgets.index');
+Route::get('/budget/create', [BudgetController::class, 'create'])->name('budget.create');
+Route::post('/budget/store', [BudgetController::class, 'store'])->name('budget.store');
+Route::delete('/budget/{id}/delete', [BudgetController::class, 'delete'])->name('budget.delete');
+

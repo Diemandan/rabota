@@ -49,7 +49,7 @@
         </form>
 
         <br>
-        <a href="{{route('salary.index')}}" class="btn btn-primary mb-3">Назад</a>
+        <a href="{{route('salaries.index')}}" class="btn btn-primary mb-3">Назад</a>
     </div>
 
 @endsection

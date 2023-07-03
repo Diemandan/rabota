@@ -46,6 +46,6 @@ class ExpenseController extends Controller
     public function delete($id): \Illuminate\Http\RedirectResponse
     {
         $this->expenseService->delete($id);
-        return redirect()->route('bonuses.index')->with('success', 'Payment deleted successfully.');
+        return redirect()->route('expenses.index')->with('success', 'Payment deleted successfully.');
     }
 }

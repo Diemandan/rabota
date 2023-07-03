@@ -3,16 +3,19 @@
 namespace App\Providers;
 
 use App\Models\Bonus;
+use App\Models\Budget;
 use App\Models\Cadence;
 use App\Models\Expense;
 use App\Models\Salary;
 use App\Models\Statistic;
 use App\Repositories\BonusRepository;
+use App\Repositories\BudgetRepository;
 use App\Repositories\CadenceRepository;
 use App\Repositories\ExpenseRepository;
 use App\Repositories\SalaryRepository;
 use App\Repositories\StatisticRepository;
 use App\Services\BonusService;
+use App\Services\BudgetService;
 use App\Services\CadenceService;
 use App\Services\ExpenseService;
 use App\Services\SalaryService;
@@ -55,6 +58,10 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(BonusService::class),
                 $app->make(ExpenseService::class)
             );
+        });
+
+        $this->app->bind(BudgetService::class, function ($app) {
+            return new BudgetService(new BudgetRepository(new Budget()));
         });
     }
 
