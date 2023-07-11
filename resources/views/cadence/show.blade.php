@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+    <a class="btn btn-primary" href="{{ route('cadence.exportPdf', $cadence->id) }}">Export to PDF</a>
     @if($cadence->status_finish)
         <div class="alert alert-danger" role="alert">
             <h4>Каденция завершена</h4>

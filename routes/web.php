@@ -56,3 +56,5 @@ Route::get('/budget/create', [BudgetController::class, 'create'])->name('budget.
 Route::post('/budget/store', [BudgetController::class, 'store'])->name('budget.store');
 Route::delete('/budget/{id}/delete', [BudgetController::class, 'delete'])->name('budget.delete');
 
+Route::get('/cadence/exportPdf/{id}', [StatisticController::class, 'cadencePdfReport'])->name('cadence.exportPdf');
+
