@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: rabota
 -- ------------------------------------------------------
--- Server version	8.0.32
+-- Server version	8.0.33
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,37 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `bonuses`
+--
+
+DROP TABLE IF EXISTS `bonuses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bonuses` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `cadence_id` bigint unsigned NOT NULL,
+  `transfer_date` date NOT NULL,
+  `transfer_amount` int NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `bonuses_cadence_id_foreign` (`cadence_id`),
+  CONSTRAINT `bonuses_cadence_id_foreign` FOREIGN KEY (`cadence_id`) REFERENCES `cadences` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bonuses`
+--
+
+LOCK TABLES `bonuses` WRITE;
+/*!40000 ALTER TABLE `bonuses` DISABLE KEYS */;
+INSERT INTO `bonuses` VALUES (1,3,'2023-05-01',13,'за масло в гидроусилитель',NULL,NULL);
+/*!40000 ALTER TABLE `bonuses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cadences`
 --
 
@@ -24,12 +55,14 @@ DROP TABLE IF EXISTS `cadences`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cadences` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `daily_rate` int NOT NULL DEFAULT '75',
+  `status_finish` tinyint(1) NOT NULL DEFAULT '0',
   `start` date NOT NULL,
-  `finish` date NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `finish` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +71,7 @@ CREATE TABLE `cadences` (
 
 LOCK TABLES `cadences` WRITE;
 /*!40000 ALTER TABLE `cadences` DISABLE KEYS */;
-INSERT INTO `cadences` VALUES (1,'2023-01-17','2023-03-25','2023-02-19 21:43:18','2023-02-19 21:43:18');
+INSERT INTO `cadences` VALUES (3,70,1,'2023-01-17','2023-03-26','2023-05-27 17:41:20','2023-05-27 22:26:13'),(5,75,0,'2023-05-02',NULL,'2023-05-28 17:52:14','2023-05-28 17:52:14');
 /*!40000 ALTER TABLE `cadences` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,11 +85,14 @@ DROP TABLE IF EXISTS `debts`;
 CREATE TABLE `debts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
+  `cadence_id` bigint unsigned NOT NULL,
   `debt` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `debts_cadence_id_foreign` (`cadence_id`),
+  CONSTRAINT `debts_cadence_id_foreign` FOREIGN KEY (`cadence_id`) REFERENCES `cadences` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,6 +101,7 @@ CREATE TABLE `debts` (
 
 LOCK TABLES `debts` WRITE;
 /*!40000 ALTER TABLE `debts` DISABLE KEYS */;
+INSERT INTO `debts` VALUES (1,'2023-01-16',3,311,NULL,NULL),(3,'2023-05-01',5,326,'2023-05-28 17:52:14','2023-05-28 17:52:14');
 /*!40000 ALTER TABLE `debts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,12 +114,16 @@ DROP TABLE IF EXISTS `expenses`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `expenses` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `cadence_id` bigint unsigned NOT NULL,
   `payment_date` date NOT NULL,
   `payment_amount` int NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `expenses_cadence_id_foreign` (`cadence_id`),
+  CONSTRAINT `expenses_cadence_id_foreign` FOREIGN KEY (`cadence_id`) REFERENCES `cadences` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +132,6 @@ CREATE TABLE `expenses` (
 
 LOCK TABLES `expenses` WRITE;
 /*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-INSERT INTO `expenses` VALUES (2,'2023-01-17',350,'2023-02-19 21:49:35','2023-02-19 21:49:35'),(3,'2023-01-23',403,'2023-02-19 21:49:35','2023-02-19 21:49:35'),(4,'2023-01-30',402,'2023-02-19 21:49:35','2023-02-19 21:49:35'),(5,'2023-02-02',450,'2023-02-19 21:49:35','2023-02-19 21:49:35'),(6,'2023-02-10',445,'2023-02-19 21:49:35','2023-02-19 21:49:35'),(7,'2023-02-16',400,'2023-02-19 21:49:35','2023-02-19 21:49:35');
 /*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +176,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +185,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_02_19_201259_create_salaries_table',2),(6,'2023_02_19_201849_create_cadences_table',2),(7,'2023_02_19_202511_create_expenses_table',2),(8,'2023_02_19_202954_create_debts_table',2);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1),(2,'2014_10_12_100000_create_password_reset_tokens_table',1),(3,'2019_08_19_000000_create_failed_jobs_table',1),(4,'2019_12_14_000001_create_personal_access_tokens_table',1),(5,'2023_02_19_201249_create_cadences_table',1),(6,'2023_02_19_201259_create_salaries_table',1),(7,'2023_02_19_202511_create_expenses_table',1),(8,'2023_02_19_202954_create_debts_table',1),(9,'2023_05_28_165651_create_bonuses_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,12 +255,15 @@ DROP TABLE IF EXISTS `salaries`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `salaries` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `cadence_id` bigint unsigned NOT NULL,
   `transfer_date` date NOT NULL,
   `transfer_amount` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `salaries_cadence_id_foreign` (`cadence_id`),
+  CONSTRAINT `salaries_cadence_id_foreign` FOREIGN KEY (`cadence_id`) REFERENCES `cadences` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,6 +272,7 @@ CREATE TABLE `salaries` (
 
 LOCK TABLES `salaries` WRITE;
 /*!40000 ALTER TABLE `salaries` DISABLE KEYS */;
+INSERT INTO `salaries` VALUES (1,3,'2023-01-17',350,NULL,NULL),(2,3,'2023-01-23',403,NULL,NULL),(3,3,'2023-01-30',402,NULL,NULL),(4,3,'2023-02-02',450,NULL,NULL),(5,3,'2023-02-10',445,NULL,NULL),(6,3,'2023-02-16',400,NULL,NULL),(7,3,'2023-02-22',360,NULL,NULL),(8,3,'2023-03-03',400,NULL,NULL),(9,3,'2023-03-10',518,NULL,NULL),(10,3,'2023-03-17',300,NULL,NULL),(11,3,'2023-03-23',300,NULL,NULL),(12,3,'2023-03-27',500,NULL,NULL),(14,5,'2023-05-02',326,'2023-05-28 19:22:40','2023-05-28 19:22:40'),(17,5,'2023-05-10',350,'2023-05-28 19:31:56','2023-05-28 19:31:56'),(18,5,'2023-05-11',253,'2023-05-28 19:32:14','2023-05-28 19:32:14'),(19,5,'2023-05-17',350,'2023-05-28 19:32:38','2023-05-28 19:32:38'),(20,5,'2023-05-23',350,'2023-05-28 19:33:06','2023-05-28 19:33:06');
 /*!40000 ALTER TABLE `salaries` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,4 +315,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-20  1:30:19
+-- Dump completed on 2023-05-28 22:48:35

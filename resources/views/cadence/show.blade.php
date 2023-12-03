@@ -85,7 +85,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="3">Зарплата еще не начислялась за эту каденцию</td>
+                    <td colspan="3">Покупок за свои не было за эту каденцию</td>
                 </tr>
             @endif
             </tbody>

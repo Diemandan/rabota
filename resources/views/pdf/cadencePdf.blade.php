@@ -6,71 +6,75 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cadence PDF report</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="container mt-5">
-    <h6 >Cadence period: {{$cadence->start}} - {{$cadence->finish}}</h6>
+    <h6 class="table table-secondary table-striped">Каденция период: с {{$cadence->start}} по {{$cadence->finish}}</h6>
 
-    <h64>Otrabotano : {{ $cadence->totalDays }} dnej</h64>
+    <h6 class="table-success" style="color: green;">Отработано : {{ $cadence->totalDays }} дней</h6>
 
-    <h6>Vsego perevedeno:  {{$cadence->totalAmount}} euro
-
-    </h6>
-
-    <h6>Ostatok na na4alo:  {{$cadence->startDebt}} euro
+    <h6 class="table-info" style="color: darkblue;">Всего переведено: {{$cadence->totalAmount}} euro
 
     </h6>
 
-    <h5>Vsego ostatok na dannij moment:
-        <span class="badge bg-danger"> {{$cadence->totalBalance}} euro
-            </span>
+    <h6 class="table-warning" style="color: darkred;">Остаток на начало каденции: {{$cadence->startDebt}} euro
+
+    </h6>
+
+    <h5 class="table-danger" style="color: darkred;">Всего остаток на данный момент: {{$cadence->totalBalance}} euro
     </h5>
 
 
-    <h6>Perevody</h6>
-    <table class="table table-secondary table-striped">
+    <h6>Переводы</h6>
+    <table class="table table-sm  table-secondary table-striped text-center"
+           style="font-family: DejaVu Sans, sans-serif;">
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th>Date</th>
-            <th>Summ in euro</th>
+            <th>Дата</th>
+            <th>Сумма в euro</th>
         </tr>
         </thead>
         <tbody>
 
-            @foreach($cadence->salaries as $salary)
-                <tr>
-                    <th scope="row">{{ $loop->index + 1 }}</th>
-                    <td>{{ $salary->transfer_date }}</td>
-                    <td>{{ $salary->transfer_amount }}</td>
+        @foreach($cadence->salaries as $salary)
+            <tr>
+                <th scope="row">{{ $loop->index + 1 }}</th>
+                <td>{{ $salary->transfer_date }}</td>
+                <td>{{ $salary->transfer_amount }}</td>
 
-                </tr>
-            @endforeach
+            </tr>
+        @endforeach
         </tbody>
     </table>
 
-    <h5>Pokupki za nali4nye</h5>
-    <table class="table table-secondary table-striped">
+    <h5>Покупки за наличные</h5>
+    <table class="table table-sm table-secondary table-striped text-center"
+           style="font-family: DejaVu Sans, sans-serif;">
         <thead>
         <tr>
             <th scope="row">#</th>
-            <th>date</th>
-            <th>Summ in euro</th>
-            <th>description</th>
+            <th>Дата</th>
+            <th>Сумма в euro</th>
+            <th>Описание</th>
         </tr>
         </thead>
         <tbody>
 
+        @if ($cadence->expenses->isEmpty())
+            <td></td>
+            <td>Покупок не было</td>
+        @else
             @foreach($cadence->expenses as $expense)
                 <tr>
                     <th scope="row">{{ $loop->index + 1 }}</th>
                     <td>{{ $expense->payment_date }}</td>
                     <td>{{ $expense->payment_amount }}</td>
-                    <td>Pribor oplaty dorog Slovakiya</td>
-
+                    <td>{{ $expense->description }}</td>
                 </tr>
             @endforeach
+        @endif
         </tbody>
     </table>
 

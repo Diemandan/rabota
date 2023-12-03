@@ -26,10 +26,10 @@ class SalaryRepository
     {
         $query = $this->model->with('cadence');
 
-        if (!$id == NULL)
+        if (!is_null($id))
             return $query->where('cadence_id', $id)->get();
 
-        return $query->paginate(self::PER_PAGE);
+        return $query->latest()->paginate(self::PER_PAGE);
     }
 
     public function create(array $data)

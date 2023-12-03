@@ -28,7 +28,7 @@ class BudgetService
     public function getBudgets(?string $month): Model|Collection
     {
         if (!$month)
-            return $this->repository->all();
+            return $this->repository->getCurrent();
 
         return $this->repository->getByMonth($month);
     }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Budget;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -33,9 +34,9 @@ class BudgetRepository
         $this->model->destroy($id);
     }
 
-    public function all(): Collection
+    public function getCurrent(): Collection
     {
-        return $this->model->all();
+        return $this->model->where('month', '>=', Carbon::now()->format('m.Y'))->get();
     }
 
     /**
