@@ -30,7 +30,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('bonuses.index')}}">
                             <span data-feather="bar-chart-2"></span>
-                            Удержания
+                            Корректировки
                         </a>
                     </li>
                     <li class="nav-item">
@@ -52,7 +52,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href={{route('statistics.index')}}>
                             <span data-feather="file-text"></span>
-                            Текущий месяц
+                            Годовая
                         </a>
                     </li>
 
