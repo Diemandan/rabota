@@ -10,7 +10,7 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
     <!-- Bootstrap core CSS -->
-    <link href="../storage/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         .bd-placeholder-img {
@@ -30,7 +30,7 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="../storage/css/signin.css" rel="stylesheet">
+    <link href="../css/signin.css" rel="stylesheet">
 </head>
 <body class="text-center">
 
