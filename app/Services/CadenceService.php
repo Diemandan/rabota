@@ -44,6 +44,7 @@ class CadenceService
         foreach ($cadences as $cadence) {
             $cadence->totalBalance = $this->getTotalDebt($cadence);
             $cadence->totalDays = $this->getTotalDays($cadence);
+            $cadence->totalSalariesPayments = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
         }
 
         return $cadences;
@@ -60,6 +61,18 @@ class CadenceService
         $cadence->startDebt = $cadence->debt->debt;
 
         return $cadence;
+    }
+
+    public function getCadencesList()
+    {
+        $cadences = $this->cadenceRepository->cadencesList();
+
+        $cadences->map(function ($cadence) {
+            $cadence->start = Carbon::parse($cadence->start)->toDateString();
+            return $cadence;
+        });
+
+        return $cadences;
     }
 
     public function create(CadenceRequest $request): void
@@ -97,13 +110,12 @@ class CadenceService
         return $totalBalance;
     }
 
-    private function getTotalDays(Model $cadence): int
+    private function getTotalDays(Model $cadence): int|float
     {
-        $startDate = Carbon::parse($cadence->start, 2);
-        $endDate = Carbon::parse($cadence->finish, 2);
+        $startDate = Carbon::parse($cadence->start, 2)->startOfDay();
+        $endDate = Carbon::parse($cadence->finish, 2)->startOfDay();
 
-        $days = $endDate->diffInDays($startDate) + 1;
-
+        $days = $endDate->diffInDays($startDate) + 1; // Add 1 for the current day
         return $days;
     }
 }

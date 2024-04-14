@@ -58,7 +58,7 @@
         </form>
 
         <br>
-        <a href="{{route('expenses.index')}}" class="btn btn-primary mb-3">Назад</a>
+        <a href="javascript:history.back()" class="btn btn-primary mb-3">Назад</a>
     </div>
 
 @endsection

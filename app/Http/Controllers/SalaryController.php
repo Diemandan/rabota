@@ -17,19 +17,24 @@ class SalaryController extends Controller
 
     private SalaryService $salaryService;
     private CadenceRepository $cadenceRepository;
+    private CadenceService  $cadenceService;
 
-    public function __construct(SalaryService $salaryService, CadenceRepository $cadenceRepository)
+    public function __construct(SalaryService $salaryService, CadenceRepository $cadenceRepository, CadenceService $cadenceService)
     {
         $this->salaryService = $salaryService;
         $this->cadenceRepository = $cadenceRepository;
+        $this->cadenceService = $cadenceService;
     }
 
 
     public function index(Request $request)
     {
+        $request->validate([
+            'cadence_id' => 'integer|exists:cadences,id'
+        ]);
         $cadenceId = $request->cadence_id;
 
-        $cadences = $this->cadenceRepository->getCadences();
+        $cadences = $this->cadenceService->getCadencesList();
         $salaries = $this->salaryService->getAll($cadenceId);
 
         return view('salaries.index', compact('salaries', 'cadences'));
@@ -50,7 +55,7 @@ class SalaryController extends Controller
         if ($request->validated()) {
             $this->salaryService->create($request);
 
-            return redirect()->route('salaries.index')->with('success', 'Salary added successfully.');
+            return redirect()->route('cadences.index')->with('success', 'Salary added successfully.');
         }
 
         return redirect()->back()->withErrors($request->errors())->withInput();
@@ -59,8 +64,6 @@ class SalaryController extends Controller
     public function delete($id)
     {
         $this->salaryService->delete($id);
-        return redirect()->route('salaries.index')->with('success', 'Salary deleted successfully.');
+        return redirect()->back()->with('success', 'Salary deleted successfully.');
     }
-
-
 }
