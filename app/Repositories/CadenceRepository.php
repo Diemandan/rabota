@@ -51,6 +51,11 @@ class CadenceRepository
         return $this->model->all();
     }
 
+    public function cadencesList(): Collection
+    {
+        return $this->model->select(['id', 'start'])->get();
+    }
+
     public function delete($id)
     {
         $this->model->destroy($id);

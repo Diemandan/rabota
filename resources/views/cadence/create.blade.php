@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 <label for="start">Начало каденции</label>
-                <input type="date" class="form-control @error('start') is-invalid @enderror" id="start" name="start"
+                <input type="datetime-local" class="form-control @error('start') is-invalid @enderror" id="start" name="start"
                        value="{{ old('start', isset($cadence) ? $cadence->start : '') }}"
                        @if(!isset($cadence)) required @endif>
                 @error('start')
@@ -50,7 +50,7 @@
 
             <div class="form-group">
                 <label for="finish">Конец каденции</label>
-                <input type="date" class="form-control @error('finish') is-invalid @enderror" id="finish" name="finish"
+                <input type="datetime-local" class="form-control @error('finish') is-invalid @enderror" id="finish" name="finish"
                        value="{{ old('finish', isset($cadence) ? $cadence->finish : '') }}"
                        @if(isset($cadence) && $cadence->status_finish == 1) required @endif>
                 @error('finish')
@@ -62,7 +62,7 @@
         </form>
 
         <br>
-        <a href="{{route('cadences.index')}}" class="btn btn-primary mb-3">Назад</a>
+        <a href="javascript:history.back()" class="btn btn-primary mb-3">Назад</a>
     </div>
 
 @endsection

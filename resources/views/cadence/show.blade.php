@@ -31,6 +31,8 @@
             <span class="badge bg-danger"> {{$cadence->totalBalance}} евро
             </span>
         </h4>
+        <a href="{{ route('cadence.edit', $cadence->id) }}"
+           class="btn btn-sm btn-primary">Edit</a>
         <hr>
 
         <h3>Начисления</h3>
@@ -43,6 +45,7 @@
             </tr>
             </thead>
             <tbody>
+            <a href="{{ route('salary.create') }}" class="btn btn-primary mb-3 mt-3">Внести зачисление</a>
             @if(!$cadence->salaries->isEmpty())
 
                 @foreach($cadence->salaries as $salary)
@@ -92,7 +95,7 @@
         </table>
 
 
-        <a href="{{ route('cadences.index') }}" class="btn btn-primary mb-3 mt-3">Back</a>
+        <a href="javascript:history.back()" class="btn btn-primary mb-3 mt-3">Back</a>
 
     </div>
 @endsection

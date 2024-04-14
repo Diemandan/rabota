@@ -10,6 +10,7 @@
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Остаток на конец кадении</th>
+                <th>Всего переведено</th>
                 <th>Статус каденции</th>
                 <th></th>
             </tr>
@@ -21,6 +22,7 @@
                     <td>{{ $cadence->start }}</td>
                     <td>{{ $cadence->finish }}</td>
                     <td>{{ $cadence->totalBalance }}</td>
+                    <td>{{ $cadence->totalSalariesPayments }}</td>
                     <td>
                         @if($cadence->status_finish == 0)
                             <div class="btn btn-success"> ещё работаем</div>
