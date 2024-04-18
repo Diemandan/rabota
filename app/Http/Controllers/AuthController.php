@@ -15,9 +15,13 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
+        $remember = $request->has('remember');
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            $request->session()->put('user_email', $request->email);
+
             return redirect()->route('cadences.index');
         }
 
