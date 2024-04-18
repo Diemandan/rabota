@@ -7,12 +7,12 @@
             <p style="padding-right: 5px">Filter by status: </p>
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a href="{{ route('budgets.index') }}?all">Все</a>
+                    <a href="{{ route('budget.index') }}?all">Все</a>
                 </li>
                 @foreach ($months as $month)
                     <li class="nav-item">
                         <a style="padding-left: 10px"
-                           href="{{ route('budgets.index', ['month' => $month]) }}">{{ $month }}</a>
+                           href="{{ route('budget.index', ['month' => $month]) }}">{{ $month }}</a>
                     </li>
                 @endforeach
             </ul>

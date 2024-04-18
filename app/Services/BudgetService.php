@@ -45,7 +45,11 @@ class BudgetService
     {
         $data = $request->except('_token');
 
-        $this->repository->create($data);
+        if ($request->input('id')) {
+            $this->repository->update($data);
+        } else {
+            $this->repository->create($data);
+        }
     }
 
     public function getBudget($id)

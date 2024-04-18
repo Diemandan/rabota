@@ -56,7 +56,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/cadence/create', [CadenceController::class, 'store'])->name('cadence.store');
     Route::delete('/cadence/{id}/delete', [CadenceController::class, 'delete'])->name('cadence.delete');
 
-    Route::get('/budget/index', [BudgetController::class, 'index'])->name('budgets.index');
+    Route::get('/budget/index', [BudgetController::class, 'index'])->name('budget.index');
     Route::get('/budget/create', [BudgetController::class, 'create'])->name('budget.create');
     Route::get('/budget/create/{id}', [BudgetController::class, 'edit'])->name('budget.edit');
     Route::post('/budget/store', [BudgetController::class, 'store'])->name('budget.store');

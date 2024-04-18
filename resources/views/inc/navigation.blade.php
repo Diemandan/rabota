@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('budgets.index')}}">
+                        <a class="nav-link" href="{{route('budget.index')}}">
                             <span data-feather="bar-chart-2"></span>
                             Планирование бюджета
                         </a>
