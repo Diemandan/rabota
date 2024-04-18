@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/budget/index', [BudgetController::class, 'index'])->name('budgets.index');
     Route::get('/budget/create', [BudgetController::class, 'create'])->name('budget.create');
+    Route::get('/budget/create/{id}', [BudgetController::class, 'edit'])->name('budget.edit');
     Route::post('/budget/store', [BudgetController::class, 'store'])->name('budget.store');
     Route::delete('/budget/{id}/delete', [BudgetController::class, 'delete'])->name('budget.delete');
 

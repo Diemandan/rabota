@@ -23,6 +23,11 @@ class BudgetRepository
         $this->model->create($data);
     }
 
+    public function find($id): Model
+    {
+        return $this->model->find($id);
+    }
+
     public function update(array $data)
     {
         $model = $this->model->find($data['id']);

@@ -47,4 +47,11 @@ class BudgetService
 
         $this->repository->create($data);
     }
+
+    public function getBudget($id)
+    {
+        $budget = $this->repository->find($id);
+
+        return $budget;
+    }
 }

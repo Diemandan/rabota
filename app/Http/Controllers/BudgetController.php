@@ -18,12 +18,18 @@ class BudgetController extends Controller
         $budgets = $this->service->getBudgets($request);
         $totalCashSum = $budgets->sum('cash');
 
-        return view('budgets.index', compact('budgets', 'months', 'totalCashSum'));
+        return view('budget.index', compact('budgets', 'months', 'totalCashSum'));
     }
 
     public function create()
     {
-        return view('budgets.create');
+        return view('budget.create');
+    }
+
+    public function edit($id)
+    {
+        $budget = $this->service->getBudget($id);
+        return view('budget.create', compact('budget'));
     }
 
     public function store(BudgetRequest $request)
@@ -31,7 +37,7 @@ class BudgetController extends Controller
         if ($request->validated()) {
             $this->service->create($request);
 
-            return redirect()->route('budgets.index')->with('success', 'Expense added successfully.');
+            return redirect()->route('budget.index')->with('success', 'Expense added successfully.');
         }
 
         return redirect()->back()->withErrors($request->errors())->withInput();
@@ -40,7 +46,7 @@ class BudgetController extends Controller
     public function delete(int $id)
     {
         $this->service->delete($id);
-        return redirect()->route('budgets.index')->with('success', 'Payment deleted successfully.');
+        return redirect()->route('budget.index')->with('success', 'Payment deleted successfully.');
 
     }
 }

@@ -44,6 +44,8 @@
                     <td>{{ $budget->month }}</td>
                     <td>
                         <div class="d-flex flex-row bd-highlight mb-3">
+                            <a href="{{ route('budget.edit', $budget->id) }}"
+                               class="btn btn-sm btn-primary">Edit</a>
                             <form action="{{ route('budget.delete', $budget->id) }}" method="POST"
                                   style="display: inline-block;">
                                 @csrf
