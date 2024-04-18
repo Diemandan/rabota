@@ -53,7 +53,7 @@ class CadenceRepository
 
     public function cadencesList(): Collection
     {
-        return $this->model->select(['id', 'start'])->get();
+        return $this->model->select(['id', 'start'])->latest()->get();
     }
 
     public function delete($id)

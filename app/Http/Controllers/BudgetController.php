@@ -14,9 +14,8 @@ class BudgetController extends Controller
 
     public function index(Request $request)
     {
-        $month = $request->month;
         $months = $this->service->getMonths();
-        $budgets = $this->service->getBudgets($month);
+        $budgets = $this->service->getBudgets($request);
         $totalCashSum = $budgets->sum('cash');
 
         return view('budgets.index', compact('budgets', 'months', 'totalCashSum'));

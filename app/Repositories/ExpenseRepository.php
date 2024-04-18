@@ -40,6 +40,6 @@ class ExpenseRepository
 
     public function getAll(): LengthAwarePaginator
     {
-        return $this->model->with('cadence')->paginate(self::PER_PAGE);
+        return $this->model->with('cadence')->latest()->paginate(self::PER_PAGE);
     }
 }

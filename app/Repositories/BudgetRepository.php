@@ -36,7 +36,12 @@ class BudgetRepository
 
     public function getCurrent(): Collection
     {
-        return $this->model->where('month', '>=', Carbon::now()->format('m.Y'))->get();
+        return $this->model->where('month', '>=', Carbon::now()->format('Y-m'))->get();
+    }
+
+    public function getAllMonthes(): Collection
+    {
+        return $this->model->orderBy('month', 'DESC')->get();
     }
 
     /**
@@ -49,6 +54,6 @@ class BudgetRepository
 
     public function getMonths(): array
     {
-        return $this->model->pluck('month')->unique()->toArray();
+        return $this->model->orderBy('month', 'DESC')->pluck('month')->unique()->toArray();
     }
 }
