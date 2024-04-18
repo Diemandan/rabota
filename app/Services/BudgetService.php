@@ -25,12 +25,15 @@ class BudgetService
         $this->repository->delete($id);
     }
 
-    public function getBudgets(?string $month): Model|Collection
+    public function getBudgets($request): Model|Collection
     {
-        if (!$month)
-            return $this->repository->getCurrent();
+        if ($request->has('all'))
+            return $this->repository->getAllMonthes();
 
-        return $this->repository->getByMonth($month);
+        if ($request->month)
+            return $this->repository->getByMonth($request->month);
+
+        return $this->repository->getCurrent();
     }
 
     public function getMonths(): array

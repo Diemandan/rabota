@@ -7,7 +7,7 @@
             <p style="padding-right: 5px">Filter by status: </p>
             <ul class="nav nav-pills">
                 <li class="nav-item">
-                    <a href="{{ route('budgets.index') }}">Все</a>
+                    <a href="{{ route('budgets.index') }}?all">Все</a>
                 </li>
                 @foreach ($months as $month)
                     <li class="nav-item">

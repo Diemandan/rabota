@@ -20,7 +20,7 @@
 
         <div class="form-group w-50">
             <label for="date">Месяц планируемой траты</label>
-            <input type="text" class="form-control @error('date') is-invalid @enderror" id="date"
+            <input type="month" class="form-control @error('date') is-invalid @enderror" id="date"
                    name="month"
                    value="{{ old('month') }}"
                    required>
