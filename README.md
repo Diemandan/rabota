@@ -1,4 +1,1 @@
-1. Clone rabota repository https://github.com/Diemandan/rabota
-```bash
-git clone https://github.com/Diemandan/rabota
-```
+Учет рабочих дней водителей-международников с расчётом оплаты и остатков за отработанный период
