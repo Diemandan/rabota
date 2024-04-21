@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Http\Requests\CadenceRequest;
 use App\Models\Cadence;
+use App\Models\Salary;
 use App\Repositories\cadenceRepository;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request;
@@ -42,6 +43,8 @@ class CadenceService
         $cadences = $this->cadenceRepository->getCadences();
 
         foreach ($cadences as $cadence) {
+            $cadence['start'] = Carbon::parse($cadence['start'])->format('Y-m-d H:i');
+            $cadence['finish'] = Carbon::parse($cadence['finish'])->format('Y-m-d H:i');
             $cadence->totalBalance = $this->getTotalDebt($cadence);
             $cadence->totalDays = $this->getTotalDays($cadence);
             $cadence->totalSalariesPayments = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
@@ -68,7 +71,7 @@ class CadenceService
         $cadences = $this->cadenceRepository->cadencesList();
 
         $cadences->map(function ($cadence) {
-            $cadence->start = Carbon::parse($cadence->start)->toDateString();
+            $cadence->start = Carbon::parse($cadence->start)->format('Y-m-d');
             return $cadence;
         });
 
@@ -78,6 +81,9 @@ class CadenceService
     public function create(CadenceRequest $request): void
     {
         $data = $request->except('_token');
+        $data['start'] = Carbon::parse($data['start'])->format('Y-m-d H:i');
+        if (isset($data['finish']))
+            $data['finish'] = Carbon::parse($data['finish'])->format('Y-m-d H:i');
 
         if ($request->input('id')) {
             $this->cadenceRepository->update($data);

@@ -20,7 +20,7 @@
             @foreach($bonuses as $bonus)
                 <tr>
                     <th scope="row">{{ $loop->index + ($bonuses->perPage() * ($bonuses->currentPage() - 1)) + 1 }}</th>
-                    <td>с {{$bonus->cadence->start}} по {{$bonus->cadence->finish}}</td>
+                    <td>с {{ \Carbon\Carbon::parse($bonus->cadence->start)->format('Y-m-d') }} по {{ \Carbon\Carbon::parse($bonus->cadence->finish)->format('Y-m-d') }}</td>
                     <td>{{$bonus->transfer_amount}}</td>
                     <td>{{$bonus->transfer_date}}</td>
                     <td>{{$bonus->description}}</td>

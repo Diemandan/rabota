@@ -4,7 +4,7 @@
     <div class="container">
 
         <header class="d-flex flex-wrap justify-content-left py-3 mb-4 border-bottom">
-            <p style="padding-right: 5px">Filter by status: </p>
+            <p style="padding-right: 5px">Выбрать каденцию: </p>
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a href="{{ route('salaries.index') }}">Все</a>
@@ -22,7 +22,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Период каденции</th>
+                    <th scope="col">Каденция</th>
                     <th scope="col">Сумма</th>
                     <th scope="col">Дата перевода</th>
                     <th></th>
@@ -38,7 +38,7 @@
                         @else
                             <th scope="row">{{ $loop->index + 1 }}</th>
                         @endif
-                        <td>с {{ $salary->cadence->start }} по {{ $salary->cadence->finish }}</td>
+                        <td>с {{ \Carbon\Carbon::parse($salary->cadence->start)->format('Y-m-d') }} по {{ \Carbon\Carbon::parse($salary->cadence->finish)->format('Y-m-d') }}</td>
                         <td>{{ $salary->transfer_amount }}</td>
                         <td>{{ $salary->transfer_date }}</td>
                         <td>
