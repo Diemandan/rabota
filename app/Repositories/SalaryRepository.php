@@ -22,6 +22,16 @@ class SalaryRepository
         return $this->model->where('transfer_date', '>=', date('Y-01-01'))->get();
     }
 
+    public function totalLastYearSalary()
+    {
+        $lastYear = date('Y') - 1;
+
+        $startLastYear = $lastYear . '-01-01';
+        $endLastYear = $lastYear . '-12-31';
+
+        return $this->model->whereBetween('transfer_date', [$startLastYear, $endLastYear])->get();
+    }
+
     public function salariesByCadenceId(?string $id): LengthAwarePaginator|Collection
     {
         $query = $this->model->with('cadence');

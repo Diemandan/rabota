@@ -21,7 +21,7 @@
             @foreach($expenses as $expense)
                 <tr>
                     <th scope="row">{{ $loop->index + ($expenses->perPage() * ($expenses->currentPage() - 1)) + 1 }}</th>
-                    <td>с {{$expense->cadence->start}} по {{$expense->cadence->finish}}</td>
+                    <td>с {{ \Carbon\Carbon::parse($expense->cadence->start)->format('Y-m-d') }} по {{ \Carbon\Carbon::parse($expense->cadence->finish)->format('Y-m-d') }}</td>
                     <td>{{$expense->payment_amount}}</td>
                     <td>{{$expense->payment_date}}</td>
                     <td>{{$expense->description}}</td>

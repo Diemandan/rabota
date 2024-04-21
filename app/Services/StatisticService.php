@@ -28,11 +28,15 @@ class StatisticService
     public function getTotalInfo()
     {
         $yearSalary = $this->salaryRepository->totalYearSalary()->sum('transfer_amount');
-        $totalDays = date('z') + 1;
+        $lastYearSalary = $this->salaryRepository->totalLastYearSalary()->sum('transfer_amount');
+        $totalLastYearDays = 365;
+        $totalDays = Carbon::now()->isoFormat('DDD');
 
         return [
             'totalSalary' => $yearSalary,
-            'totalDays' => $totalDays
+            'totalDays' => $totalDays,
+            'lastYearSalary' => $lastYearSalary,
+            'totalLastYearDays' => $totalLastYearDays,
         ];
     }
 

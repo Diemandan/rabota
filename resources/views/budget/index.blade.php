@@ -4,7 +4,7 @@
     <div class="container">
 
         <header class="d-flex flex-wrap justify-content-left py-3 mb-4 border-bottom">
-            <p style="padding-right: 5px">Filter by status: </p>
+            <p style="padding-right: 5px">Выбрать каденцию: </p>
             <ul class="nav nav-pills">
                 <li class="nav-item">
                     <a href="{{ route('budget.index') }}?all">Все</a>
