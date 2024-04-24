@@ -29,17 +29,10 @@
             }
         </style>
 
-        <!-- Scripts -->
-{{--                        @vite(['resources/css/app.css', 'resources/js/app.js'])--}}
+        <script src="//upsales.pro/api/w/1/widget.js" async></script>
     </head>
     <body>
-    {{--    @if (isset($header))--}}
-    {{--        <header class="bg-white shadow">--}}
-    {{--            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">--}}
-    {{--                {{ $header }}--}}
-    {{--            </div>--}}
-    {{--        </header>--}}
-    {{--    @endif--}}
+
 
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
             <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Зарплатный калькулятор</a>
