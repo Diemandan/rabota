@@ -29,7 +29,7 @@
             }
         </style>
 
-        <script src="//upsales.pro/api/w/1/widget.js" async></script>
+        <script src="//upsales.loc:88/api/w/109/widget.js" async></script>
     </head>
     <body>
 
