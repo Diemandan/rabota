@@ -31,7 +31,7 @@
 
     <!-- Custom styles for this template -->
     <link href="../css/signin.css" rel="stylesheet">
-    <script src="//upsales.pro/api/w/1/widget.js" async></script>
+{{--    <script src="//upsales.pro/api/w/1/widget.js" async></script>--}}
 </head>
 <body class="text-center">
 
