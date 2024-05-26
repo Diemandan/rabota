@@ -31,7 +31,6 @@
 
     <!-- Custom styles for this template -->
     <link href="../css/signin.css" rel="stylesheet">
-    <script src="//upsales.loc:88/api/w/109/widget.js" async></script>
 </head>
 <body class="text-center">
 
