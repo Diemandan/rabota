@@ -1,0 +1,77 @@
+on:
+push:
+  branches:
+    - production
+
+env:
+  NODE_VERSION: 16
+
+jobs:
+  deploy_prod_server:
+    runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      with:
+          ref: dev
+
+    - name: "Set up NodeJs"
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: "NPM Install"
+    run: npm install
+
+    - name: "NPM run prod"
+    run: npm run build
+
+    - name: "Setup"
+    uses: fifsky/ssh-action@master
+    with:
+      command: |
+        cd /var/www/erp
+
+        # Turn on maintenance mode
+        php artisan down || true
+
+        # Pull the latest changes from the git repository
+        git pull git@github.com-repo-1:notimetocode/erp.git production
+
+        # Install/update composer dependencies
+        composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+        # Run database migrations
+        php artisan migrate --force
+
+        # Clear caches
+        php artisan cache:clear
+
+        # Clear config
+        php artisan config:clear
+
+        # Clear routes
+        php artisan route:clear
+
+        # Clear and cache routes
+        php artisan route:cache
+
+        # Clear and cache views
+        php artisan view:cache
+
+        # Turn off maintenance mode
+        php artisan up
+        host: ${{ secrets.HOST }}
+        user: ${{ secrets.USER }}
+        key: ${{ secrets.PRIVATE_KEY}}
+
+    - name: "Deploy assets to Server"
+    uses: appleboy/scp-action@v0.1.3
+    with:
+      host: ${{ secrets.HOST }}
+      username: ${{ secrets.USER }}
+      key: ${{ secrets.PRIVATE_KEY }}
+      source: "${{ github.workspace }}/public/build"
+      target: "/var/www/erp"
+      tar_tmp_path: /tmp/
+      strip_components: 2
+      debug: true
