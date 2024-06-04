@@ -64,6 +64,22 @@
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
     </form>
+
+        <div>
+            <script
+                class="amocrm_oauth"
+                charset="utf-8"
+                data-client-id="9db3f0d1-39e2-42c0-a23f-31dbc7a7587b"
+                data-title="Button"
+                data-compact="false"
+                data-class-name="className"
+                data-color="default"
+                data-state="state"
+                data-error-callback="functionName"
+                data-mode="popup"
+                src="https://www.amocrm.ru/auth/button.min.js"
+            ></script>
+        </div>
 </main>
 
 

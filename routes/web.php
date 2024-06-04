@@ -32,6 +32,7 @@ Route::get('login', function () {
 })->name('login');
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('user.login');
 Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+Route::get('amo', [\App\Http\Controllers\IntegrationController::class, 'amoRedirect']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/salaries/index', [SalaryController::class, 'index'])->name('salaries.index');
