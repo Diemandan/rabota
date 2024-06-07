@@ -33,6 +33,10 @@ Route::get('login', function () {
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('user.login');
 Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::get('amo', [\App\Http\Controllers\IntegrationController::class, 'amoRedirect']);
+Route::get('telegram', [\App\Http\Controllers\IntegrationController::class, 'getUpdate']);
+Route::get('telegram/sendMessage', [\App\Http\Controllers\IntegrationController::class, 'sendMessage']);
+Route::get('telegram/getCourses', [\App\Http\Controllers\IntegrationController::class, 'getCourses']);
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/salaries/index', [SalaryController::class, 'index'])->name('salaries.index');
