@@ -42,7 +42,7 @@ jobs:
             # Clear and cache views
             # php artisan view:cache
             # Turn off maintenance mode
-            php artisan down
+            php artisan up
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY}}
