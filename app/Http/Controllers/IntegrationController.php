@@ -29,5 +29,6 @@ class IntegrationController
     {
         $response = $bankService->getExchangeRates();
         $service->sendMessage($response);
+        dd($response);
     }
 }
