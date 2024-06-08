@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\GetCoursesJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -12,6 +13,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->job(new GetCoursesJob())->hourly();
+        $schedule->job(new GetCoursesJob())->twiceDaily(8, 15);
         // $schedule->command('inspire')->hourly();
     }
 
