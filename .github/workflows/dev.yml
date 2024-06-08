@@ -24,7 +24,7 @@ jobs:
             # Turn on maintenance mode
             php artisan down || true
             # Pull the latest changes from the git repository
-            git pull git@github.com-repo-1:Diemandan/rabota.git dev
+            git pull git@github.com:Diemandan/rabota.git dev
             # Install/update composer dependencies
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
             # Run database migrations
