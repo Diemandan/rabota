@@ -13,8 +13,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(new GetCoursesJob())->everyMinute();
-        $schedule->job(new GetCoursesJob())->twiceDaily(10, 15);
+        $schedule->job(new GetCoursesJob())->twiceDaily(8, 15);
+        $schedule->command('db:backup')->monthly();
         // $schedule->command('inspire')->hourly();
     }
 

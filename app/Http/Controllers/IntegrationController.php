@@ -12,7 +12,6 @@ class IntegrationController
     public function amoRedirect(Request $request)
     {
         Log::info(json_encode($request->all()));
-        dd($request->all());
     }
 
     public function getList(TelegramService $service)

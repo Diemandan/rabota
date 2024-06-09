@@ -69,7 +69,12 @@
             <script
                 class="amocrm_oauth"
                 charset="utf-8"
-                data-client-id="9db3f0d1-39e2-42c0-a23f-31dbc7a7587b"
+                data-name="Final integration"
+                data-description="Integration description"
+                data-redirect_uri="https://zp-tir.of.by/login"
+                data-secrets_uri="https://zp-tir.of.by/amo"
+                data-logo=""
+                data-scopes="crm,notifications"
                 data-title="Button"
                 data-compact="false"
                 data-class-name="className"
