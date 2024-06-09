@@ -30,4 +30,11 @@ class IntegrationController
         $service->sendMessage($response);
         dd($response);
     }
+
+    public function getCoursesBGPB(BankService $bankService, TelegramService $service)
+    {
+        $response = $bankService->getUsdExchangeRateBGPB();
+        $service->sendMessage(json_encode($response));
+        dd($response);
+    }
 }
