@@ -94,8 +94,8 @@ class BankService
                     $message = "
             Курс валют Альфа Банк бизнес:
                     {$value['sellIso']}:
-                	Покупка: {$value['buyRate']}
-                	Продажа: {$value['sellRate']}
+                	Продажа: {$value['buyRate']}
+                	Покупка: {$value['sellRate']}
                 	";
                 }
             }
