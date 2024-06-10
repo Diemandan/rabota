@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Services\API\BankService;
 use App\Services\API\TelegramService;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -30,7 +31,8 @@ class GetCoursesJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $courses = $this->getExchangeRates();
+        $bankService = new BankService();
+        $courses = $bankService->getExchangeRates();
         $telegramService = new TelegramService();
         $telegramService->sendMessage($courses);
 

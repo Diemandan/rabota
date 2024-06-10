@@ -24,8 +24,10 @@ class BankService
 
             if ($response->successful()) {
                 $data = json_decode($response->body(), true);
+
                 $bgpbCourses = $this->getUsdExchangeRateBGPB();
                 $alfaBankMessage = $this->getUsdExchangeRateAlfaBank();
+
                 $bgpbBuy = $bgpbCourses['buy'] ?? 'нет данных';
                 $bgpbSell = $bgpbCourses['sell'] ?? 'нет данных';
 
