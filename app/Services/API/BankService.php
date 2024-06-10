@@ -6,6 +6,7 @@ namespace App\Services\API;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BankService
 {
@@ -24,6 +25,7 @@ class BankService
             if ($response->successful()) {
                 $data = json_decode($response->body(), true);
                 $bgpbCourses = $this->getUsdExchangeRateBGPB();
+                $alfaBankMessage = $this->getUsdExchangeRateAlfaBank();
                 $bgpbBuy = $bgpbCourses['buy'] ?? 'нет данных';
                 $bgpbSell = $bgpbCourses['sell'] ?? 'нет данных';
 
@@ -31,17 +33,18 @@ class BankService
                 	Валюта: {$data['Cur_Name']}
                 	Курс: {$data['Cur_OfficialRate']}
 
-                	Курс валют БГПБ по состоянию на {$responseDate}:
-                	Валюта: {$bgpbBuy}
-                	Курс: {$bgpbSell}";
+                	Курс USD БГПБ по состоянию на {$responseDate}:
+                	Покупка: {$bgpbBuy}
+                	Продажа: {$bgpbSell}" . $alfaBankMessage;
 
                 return $message;
             } elseif ($response->clientError()) {
                 return 'ОБНОВЛЕНИЕ КУРСОВ ВАЛЮТ: /n Client error: ' . $response->body();
             } elseif ($response->serverError()) {
-                return 'ОБНОВЛЕНИЕ КУРСОВ ВАЛЮТ: Server error ' . $response->body() ;
+                return 'ОБНОВЛЕНИЕ КУРСОВ ВАЛЮТ: Server error ' . $response->body();
             }
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return 'ОБНОВЛЕНИЕ КУРСОВ ВАЛЮТ: Connection timed out or other error';
         }
     }
@@ -72,5 +75,32 @@ class BankService
         }
 
         return $usdExchangeRate;
+    }
+
+    public function getUsdExchangeRateAlfaBank()
+    {
+        $message = '';
+        $url = 'https://developerhub.alfabank.by:8273/partner/1.0.0/public/nationalRates';
+        $url = 'https://developerhub.alfabank.by:8273/partner/1.0.0/public/rates';
+        $params = [
+            'currencyCode' => '840,978',
+        ];
+
+        $response = Http::get($url, $params);
+        if ($response->successful()) {
+            $data = json_decode($response->body(), true);
+            foreach ($data['rates'] as $value) {
+                if ($value['sellIso'] == 'USD' && $value['buyIso'] == 'BYN') {
+                    $message = "
+            Курс валют Альфа Банк бизнес:
+                    {$value['sellIso']}:
+                	Покупка: {$value['buyRate']}
+                	Продажа: {$value['sellRate']}
+                	";
+                }
+            }
+
+        }
+        return $message;
     }
 }
