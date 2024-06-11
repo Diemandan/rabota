@@ -44,7 +44,7 @@ class IntegrationController
         $client = new Client();
 
         $response = $client->request('POST', 'https://api.eu.mailgun.net/v3/zp-tir.of.by/messages', [
-            'auth' => ['api', 'YOUR_API_KEY'],
+            'auth' => ['api', env('MAILGUN_SECRET')],
             'form_params' => [
                 'from' => 'Excited User <mailgun@яз-ешкющаюин>',
                 'to' => 'diemandan63@gmail.com',
