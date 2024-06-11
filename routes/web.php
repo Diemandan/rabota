@@ -37,6 +37,7 @@ Route::get('telegram', [\App\Http\Controllers\IntegrationController::class, 'get
 Route::get('telegram/sendMessage', [\App\Http\Controllers\IntegrationController::class, 'sendMessage']);
 Route::get('telegram/getCourses', [\App\Http\Controllers\IntegrationController::class, 'getCourses']);
 Route::get('telegram/bgpb', [\App\Http\Controllers\IntegrationController::class, 'getCoursesBGPB']);
+Route::get('testemail', [\App\Http\Controllers\IntegrationController::class, 'sendTestEmail']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
