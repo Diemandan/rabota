@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('callback', [PaymentController::class, 'saveSuccessPaymentInfo']);
+Route::post('callback/failed', [PaymentController::class, 'saveFailedPaymentInfo']);

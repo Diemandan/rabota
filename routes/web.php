@@ -4,6 +4,7 @@ use App\Http\Controllers\BonusController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CadenceController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\StatisticController;
 use Illuminate\Support\Facades\Route;
@@ -72,3 +73,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/cadence/exportPdf/{id}', [StatisticController::class, 'cadencePdfReport'])->name('cadence.exportPdf');
 });
 Route::get('/statistics/index', [StatisticController::class, 'index'])->name('statistics.index');
+Route::get('/payment/create', [PageController::class, 'paymentPage'])->name('page.payment');
+Route::get('/payments/index', [PageController::class, 'paymentResult'])->name('page.payment.index');

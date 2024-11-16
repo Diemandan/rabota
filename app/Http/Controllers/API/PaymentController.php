@@ -10,7 +10,15 @@ class PaymentController
     public function saveSuccessPaymentInfo(Request $request)
     {
         $data = $request->all();
-        Log::info('УСПЕШНО' . json_encode($data));
+        Log::channel('payments')->info('УСПЕШНО' . json_encode($data));
+
+        return response()->json(['success' => true], 200);
+    }
+
+    public function saveFailedPaymentInfo(Request $request)
+    {
+        $data = $request->all();
+        Log::channel('payments')->info('ОШИБКА ОПЛАТЫ' . json_encode($data));
 
         return response()->json(['success' => true], 200);
     }
