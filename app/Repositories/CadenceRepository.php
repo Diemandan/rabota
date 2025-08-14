@@ -43,7 +43,7 @@ class CadenceRepository
 
     public function getCadences(): LengthAwarePaginator
     {
-        return $this->model->with('salaries', 'debt', 'bonuses')->paginate(self::PER_PAGE);
+        return $this->model->with('salaries', 'debt', 'bonuses')->orderByDesc('created_at')->paginate(self::PER_PAGE);
     }
 
     public function all(): Collection

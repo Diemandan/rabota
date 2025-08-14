@@ -40,6 +40,49 @@
         var pageUrl = halyk.Config().pageUrL;
         var paymentPageOrigin = halyk.Config().origin;
 
+        var authToken = prompt("Введите ваш токен:", "");
+        if (!authToken) {
+            alert("Токен не введён! Прекращение работы.");
+            return;
+        }
+
+        var auth = {
+            "access_token": authToken,
+            "expires_in": "1200",
+            "refresh_token": "",
+            "scope": "payment",
+            "token_type": "Bearer",
+        };
+        var invoiceId = "000793";
+        var amount = "20000";
+
+        console.log(auth);
+
+        var createPaymentObject = function (auth, invoiceId, amount) {
+            var paymentObject = {
+                invoiceId: invoiceId,
+                invoiceIdAlt: invoiceId,
+                backLink: "http://rabota.loc:88/payment/create?success=true",
+                failureBackLink: "http://rabota.loc:88/payment/create?success=false",
+                // postLink: "https://dev-api.reportix.kz/api/save-payment-result",
+                postLink: "https://zp-tir.of.by/api/callback/",
+                failurePostLink: "https://zp-tir.of.by/api/callback/failed",
+                language: "rus",
+                description: "Оплата в интернет магазине",
+                accountId: "test",
+                terminal: "67e34d63-102f-4bd1-898e-370781d0074d",
+                amount: amount,
+                data: `{"statement":{"name":"Arman Ali","invoiceID":"${invoiceId}"}}`,
+                currency: "KZT",
+                phone: "77777777777",
+                name: "Arman Ali",
+                email: "example@example.com",
+                cardSave: false //Параметр должен передаваться как Boolean
+            };
+            paymentObject.auth = auth;
+            return paymentObject;
+        };
+
         function pay(params) {
             location.href = pageUrl + "?params=" + LZString.compressToEncodedURIComponent(encodeParams(params));
         }
@@ -375,6 +418,8 @@
         halyk.oct = oct;
         halyk.pay = pay;
         halyk.showPaymentWidget = showPaymentWidget;
+
+        halyk.pay(createPaymentObject(auth, invoiceId, amount));
     })(halyk || (halyk = {}));
 </script>
 </body>
