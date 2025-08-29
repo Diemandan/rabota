@@ -7,6 +7,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\TelegramBotController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,8 +35,9 @@ Route::get('login', function () {
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('user.login');
 Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::post('amo', [\App\Http\Controllers\IntegrationController::class, 'amoRedirect']);
-Route::get('telegram', [\App\Http\Controllers\IntegrationController::class, 'getUpdate']);
-Route::get('telegram/sendMessage', [\App\Http\Controllers\IntegrationController::class, 'sendMessage']);
+Route::get('telegram', [TelegramBotController::class, 'getUpdate']);
+Route::post('/telegram/webhook', [TelegramBotController::class, 'webhookUpdates']);
+Route::get('telegram/sendMessage', [TelegramBotController::class, 'sendMessage']);
 Route::get('telegram/getCourses', [\App\Http\Controllers\IntegrationController::class, 'getCourses']);
 Route::get('telegram/bgpb', [\App\Http\Controllers\IntegrationController::class, 'getCoursesBGPB']);
 Route::get('testemail', [\App\Http\Controllers\IntegrationController::class, 'sendTestEmail']);

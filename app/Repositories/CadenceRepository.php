@@ -48,7 +48,7 @@ class CadenceRepository
 
     public function all(): Collection
     {
-        return $this->model->all();
+        return $this->model->orderByDesc('start')->get();
     }
 
     public function cadencesList(): Collection

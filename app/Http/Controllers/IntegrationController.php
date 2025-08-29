@@ -20,11 +20,6 @@ class IntegrationController
         $service->getupdate();
     }
 
-    public function sendMessage(TelegramService $service)
-    {
-        $service->sendMessage('test');
-    }
-
     public function getCourses(BankService $bankService, TelegramService $service)
     {
         $response = $bankService->getExchangeRates();

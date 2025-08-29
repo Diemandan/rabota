@@ -23,7 +23,7 @@ class GetCoursesJob implements ShouldQueue
      */
     public function __construct()
     {
-        //
+        $this->botService = new TelegramService();
     }
 
     /**
