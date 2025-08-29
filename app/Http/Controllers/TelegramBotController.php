@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\Finance\TradernetService;
 use App\Services\Finance\SignalService;
 use App\Models\Finance\Portfolio;
+use Illuminate\Support\Facades\Log;
 
 class TelegramBotController extends Controller
 {
@@ -36,6 +37,7 @@ class TelegramBotController extends Controller
     public function webhookUpdates(Request $request)
     {
         $update = $request->all();
+        Log::info(json_encode($update));
 
         $this->telegramService->processUpdate($update);
 
