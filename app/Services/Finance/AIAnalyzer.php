@@ -25,7 +25,7 @@ class AIAnalyzer
     {
         $message = $webSearch
             ? $this->analyzeWithWebSearch($report)
-            : $this->analyzeLocal($report);
+            : $this->analyzeLocalReport($report);
 
         return "\n\nРекомендация по бумагам от OPENAI:\n\n$message\n\n";
     }
@@ -33,7 +33,7 @@ class AIAnalyzer
     /**
      * Локальный анализ (без интернета)
      */
-    private function analyzeLocal(string $report): string
+    private function analyzeLocalReport(string $report): string
     {
         $client = OpenAI::client($this->apiKey);
 
@@ -42,7 +42,8 @@ class AIAnalyzer
             'messages' => [
                 [
                     'role' => 'user',
-                    'content' => $this->buildPrompt($report),
+//                    'content' => $this->buildPrompt($report),
+                    'content' => "Сделай глубокий прогноз по портфелю, Учти волатильность и объём торгов при рекомендации и дай короткую рекомендацию по каждой позиции в формате 'позиция - рекомендация': " . $report,
                 ]
             ]
         ]);
