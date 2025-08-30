@@ -19,8 +19,9 @@ class Kernel extends ConsoleKernel
             return $currentDay >= 8 && $currentDay <= 15;
         });
         $schedule->command('db:backup')->monthly();
-        $schedule->command('portfolio:send-report')->dailyAt('8:20');
-        $schedule->command('portfolio:send-report')->dailyAt('15:20');
+        $schedule->command('portfolio:send-report')->dailyAt('10:20');
+        $schedule->command('portfolio:send-report')->dailyAt('13:20');
+        $schedule->command('portfolio:send-report')->dailyAt('18:20');
     }
 
     /**
