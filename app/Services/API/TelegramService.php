@@ -67,9 +67,14 @@ class TelegramService
 
     public function sendMessage($text)
     {
-        $this->botApi->sendMessage([
-            'chat_id' => config('services.telegram.chat_id'),
-            'text' => $text
-        ]);
+        $maxLength = 4000;
+        $messages = str_split($text, $maxLength);
+
+        foreach ($messages as $msg) {
+            $this->botApi->sendMessage([
+                'chat_id' => config('services.telegram.chat_id'),
+                'text' => $msg
+            ]);
+        }
     }
 }
