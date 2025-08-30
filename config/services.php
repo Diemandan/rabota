@@ -24,6 +24,9 @@ return [
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
+    'openai' => [
+        'api_key' => env('OPENAI_FINANCE_API_KEY'),
+    ],
     'telegram' => [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
         'token' => env('TELEGRAM_BOT_TOKEN'),

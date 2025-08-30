@@ -46,7 +46,9 @@ class TelegramBotController extends Controller
     public function getPortfolioReport(Request $request)
     {
         $report = $this->tradernet->getPortfolioReport();
-        $this->telegramService->sendMessage($report);
+        $aiReport = $this->tradernet->aiAnalize($report['ai_report']);
+        $finalReport = $report['report'] . $aiReport;
+        $this->telegramService->sendMessage($finalReport);
 
         return response()->json(['success' => true], 204);
     }
