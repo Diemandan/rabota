@@ -15,4 +15,8 @@ return [
     'api_key' => env('OPENAI_API_KEY'),
     'organization' => env('OPENAI_ORGANIZATION'),
 
+    'web_search_times' => [
+        '13:20', // джоба в 13:20 будет с интернетом
+    ],
+
 ];

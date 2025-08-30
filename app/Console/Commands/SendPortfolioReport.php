@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Finance\UserSettings;
+use App\Services\Finance\AIAnalyzer;
 use Illuminate\Console\Command;
 use App\Services\Finance\TradernetService;
 use App\Services\API\TelegramService;
@@ -23,17 +24,20 @@ class SendPortfolioReport extends Command
     public function handle()
     {
         try {
-            $userSettings = UserSettings::first();
+            $now = now()->format('H:i');
+            $webSearchTimes = config('openai.web_search_times', []);
+            $withWebSearch = in_array($now, $webSearchTimes);
 
+            $userSettings = UserSettings::first();
             $telegram = new TelegramService($userSettings->telegram_api_key);
             $tradernet = new TradernetService();
+            $aiAnalyzer = new AiAnalyzer();
 
             $report = $tradernet->getPortfolioReport();
-            $aiReport = $this->tradernet->aiAnalize($report['ai_report']);
+            $aiReport = $aiAnalyzer->analyze($report['ai_report'], $withWebSearch);
             $finalReport = $report['report'] . $aiReport;
             $telegram->sendMessage($finalReport);
 
-            Log::info('Job по акциям: ' . $report);
             $this->info('Отчёт отправлен в Telegram.');
         } catch (\Exception $exception) {
             Log::error('ОШИБКА ПРОВЕРКИ АКЦИЙ: ' . $exception->getMessage());
