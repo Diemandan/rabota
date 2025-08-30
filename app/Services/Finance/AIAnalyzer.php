@@ -8,10 +8,13 @@ use OpenAI;
 class AIAnalyzer
 {
     private string $apiKey;
+    private string $proxy;
 
     public function __construct()
     {
         $this->apiKey = config('services.openai.api_key');
+//        $this->proxy = 'http://brd-customer-hl_f757f912-zone-dc_ai:xacclk58p5fm@brd.superproxy.io:33335';
+        $this->proxy = 'http://brd-customer-hl_f757f912-zone-residential_ai:xacclk58p5fm@brd.superproxy.io:33335';
     }
 
     /**
@@ -23,9 +26,20 @@ class AIAnalyzer
      */
     public function analyze(string $report, bool $webSearch = false): string
     {
+        $guzzle = new Client([
+            'base_uri' => 'https://api.openai.com/v1/',
+            'verify' => false,
+            'proxy' => $this->proxy,
+            'timeout' => 120,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ]
+        ]);
+
         $message = $webSearch
-            ? $this->analyzeWithWebSearch($report)
-            : $this->analyzeLocalReport($report);
+            ? $this->analyzeWithWebSearch($report, $guzzle)
+            : $this->analyzeLocalReport($report, $guzzle);
 
         return "\n\nРекомендация по бумагам от OPENAI:\n\n$message\n\n";
     }
@@ -33,38 +47,42 @@ class AIAnalyzer
     /**
      * Локальный анализ (без интернета)
      */
-    private function analyzeLocalReport(string $report): string
+    private function analyzeLocalReport(string $report, $guzzle): string
     {
-        $client = OpenAI::client($this->apiKey);
+//        $client = OpenAI::client($this->apiKey);
 
-        $response = $client->chat()->create([
-            'model' => 'gpt-5-mini',
-            'messages' => [
-                [
-                    'role' => 'user',
+//        $response = $client->chat()->create([
+//            'model' => 'gpt-5-mini',
+//            'messages' => [
+//                [
+//                    'role' => 'user',
 //                    'content' => $this->buildPrompt($report),
-                    'content' => "Сделай глубокий прогноз по портфелю, Учти волатильность и объём торгов при рекомендации и дай короткую рекомендацию по каждой позиции в формате 'позиция - рекомендация': " . $report,
+//                ]
+//            ]
+//        ]);
+
+        $response = $guzzle->post('chat/completions', [
+            'json' => [
+                'model' => 'gpt-5-mini',
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $this->buildPrompt($report),
+                    ]
                 ]
             ]
         ]);
+        $body = json_decode($response->getBody()->getContents(), true);
 
-        return $response['choices'][0]['message']['content'] ?? 'Ошибка анализа';
+        return $body['choices'][0]['message']['content'] ?? 'Ошибка анализа';
     }
 
     /**
      * Анализ с интернетом через Responses API
      */
-    private function analyzeWithWebSearch(string $report): string
+    private function analyzeWithWebSearch(string $report, $guzzle): string
     {
-        $client = new Client([
-            'base_uri' => 'https://api.openai.com/v1/',
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->apiKey,
-                'Content-Type' => 'application/json',
-            ]
-        ]);
-
-        $response = $client->post('responses', [
+        $response = $guzzle->post('responses', [
             'json' => [
                 'model' => 'gpt-4o-mini', // для web_search
                 'tools' => [
@@ -80,6 +98,7 @@ class AIAnalyzer
         ]);
 
         $body = json_decode($response->getBody()->getContents(), true);
+
         return $this->extractOutputText($body);
     }
 
