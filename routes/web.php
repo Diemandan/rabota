@@ -36,6 +36,7 @@ Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->na
 Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 Route::post('amo', [\App\Http\Controllers\IntegrationController::class, 'amoRedirect']);
 Route::get('telegram', [TelegramBotController::class, 'getUpdate']);
+Route::get('/telegram/get-portfolio-report', [TelegramBotController::class, 'getPortfolioReport']);
 Route::post('/telegram/webhook', [TelegramBotController::class, 'webhookUpdates']);
 Route::get('telegram/sendMessage', [TelegramBotController::class, 'sendMessage']);
 Route::get('telegram/getCourses', [\App\Http\Controllers\IntegrationController::class, 'getCourses']);

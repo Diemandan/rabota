@@ -6,7 +6,12 @@ use Illuminate\Support\Facades\Http;
 
 class TradernetService
 {
-    protected string $baseUrl = 'https://tradernet.com/api/';
+    protected TradernetApiClient $client;
+
+    public function __construct()
+    {
+        $this->client = new TradernetApiClient(config('services.tradernet.api_key'), config('services.tradernet.api_secret'));
+    }
 
     // Метод получения исторических котировок
     public function getHloc(string $symbol, string $dateFrom, string $dateTo, int $timeframe = 1440)
@@ -23,10 +28,39 @@ class TradernetService
             ]
         ];
 
-        $response = Http::get($this->baseUrl, [
-            'q' => json_encode($params)
-        ]);
+        return $this->client->sendRequest('getHloc', $params, 'array');
+    }
 
-        return $response->json();
+    public function getPortfolioReport()
+    {
+        $response = $this->client->sendRequest('getPositionJson', [], 'array');
+
+        if (!isset($response['result']['ps']['pos'])) {
+            return "Нет данных по портфелю";
+        }
+
+        $positions = $response['result']['ps']['pos'];
+        $report = "Портфель на " . now()->format('d.m.Y H:i') . "\n\n";
+        $totalProfit = 0;
+
+        foreach ($positions as $pos) {
+            $symbol = $pos['i'];
+            $name = $pos['name'];
+            $qty = $pos['q'];
+            $priceBuy = $pos['price_a'];
+            $currPrice = $pos['close_price'];
+            $curr = $pos['curr'];
+
+            $profit = ($currPrice - $priceBuy) * $qty;
+            $totalProfit += $profit;
+
+            $report .= "$name ($symbol)\n";
+            $report .= "Кол-во: $qty, Цена покупки: $priceBuy, Тек. цена: $currPrice\n";
+            $report .= "Прибыль/убыток: " . number_format($profit, 2) . " $curr\n\n";
+        }
+
+        $report .= "Общая прибыль/убыток: " . number_format($totalProfit, 2) . " USD";
+
+        return $report;
     }
 }

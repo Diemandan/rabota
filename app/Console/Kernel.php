@@ -16,10 +16,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new GetCoursesJob())->twiceDaily(8, 15)->when(function () {
             $currentDay = Carbon::now()->day;
-            return $currentDay >= 5 && $currentDay <= 17;
+            return $currentDay >= 8 && $currentDay <= 15;
         });
         $schedule->command('db:backup')->monthly();
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('portfolio:send-report')->dailyAt('8:20');
+        $schedule->command('portfolio:send-report')->dailyAt('15:20');
     }
 
     /**

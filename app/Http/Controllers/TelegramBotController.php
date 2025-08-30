@@ -37,11 +37,18 @@ class TelegramBotController extends Controller
     public function webhookUpdates(Request $request)
     {
         $update = $request->all();
-        Log::info(json_encode($update));
 
         $this->telegramService->processUpdate($update);
 
         return response()->json(['status' => 'ok']);
+    }
+
+    public function getPortfolioReport(Request $request)
+    {
+        $report = $this->tradernet->getPortfolioReport();
+        $this->telegramService->sendMessage($report);
+
+        return response()->json(['success' => true], 204);
     }
 
     // Добавление бумаги в портфель

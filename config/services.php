@@ -25,6 +25,7 @@ return [
         'token' => env('POSTMARK_TOKEN'),
     ],
     'telegram' => [
+        'chat_id' => env('TELEGRAM_CHAT_ID'),
         'token' => env('TELEGRAM_BOT_TOKEN'),
     ],
 
@@ -33,5 +34,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'tradernet' => [
+        'api_user_id' => env('TRADERNET_API_USER_ID'),
+        'api_key' => env('TRADERNET_API_KEY'),
+        'api_secret' => env('TRADERNET_API_SECRET'),
+    ],
 ];

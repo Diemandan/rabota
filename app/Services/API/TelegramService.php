@@ -68,7 +68,7 @@ class TelegramService
     public function sendMessage($text)
     {
         $this->botApi->sendMessage([
-            'chat_id' => env('TELEGRAM_CHAT_ID'),
+            'chat_id' => config('services.telegram.chat_id'),
             'text' => $text
         ]);
     }
