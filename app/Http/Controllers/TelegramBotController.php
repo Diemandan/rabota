@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Finance\UserSettings;
 use App\Services\API\TelegramService;
+use App\Services\Finance\AIAnalyzer;
 use Illuminate\Http\Request;
 use App\Services\Finance\TradernetService;
 use App\Services\Finance\SignalService;
@@ -45,9 +46,15 @@ class TelegramBotController extends Controller
 
     public function getPortfolioReport(Request $request)
     {
+        $aiAnalyzer = new AIAnalyzer();
+
+        $withWeb = $request->input('withWeb', false);
+
         $report = $this->tradernet->getPortfolioReport();
-        $aiReport = $this->tradernet->aiAnalize($report['ai_report']);
+        $aiReport = $aiAnalyzer->analyze($report['ai_report'], $withWeb);
+
         $finalReport = $report['report'] . $aiReport;
+
         $this->telegramService->sendMessage($finalReport);
 
         return response()->json(['success' => true], 204);
