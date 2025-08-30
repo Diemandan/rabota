@@ -2,8 +2,8 @@
 
 namespace App\Services\Finance;
 
-use OpenAI\Laravel\Facades\OpenAI;
 use GuzzleHttp\Client;
+use OpenAI;
 
 class AIAnalyzer
 {
