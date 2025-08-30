@@ -29,7 +29,9 @@ class SendPortfolioReport extends Command
             $tradernet = new TradernetService();
 
             $report = $tradernet->getPortfolioReport();
-            $telegram->sendMessage($report);
+            $aiReport = $this->tradernet->aiAnalize($report['ai_report']);
+            $finalReport = $report['report'] . $aiReport;
+            $telegram->sendMessage($finalReport);
 
             Log::info('Job по акциям: ' . $report);
             $this->info('Отчёт отправлен в Telegram.');
