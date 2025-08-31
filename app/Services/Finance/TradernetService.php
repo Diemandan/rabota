@@ -50,7 +50,7 @@ class TradernetService
             $profit = ($currPrice - $priceBuy) * $qty;
             $totalProfit += $profit;
 
-            $history = $this->getTradernetHistory($symbol, 30);
+            $history = $this->getTradernetHistory($symbol, 60);
             $historyString = implode(', ', array_map(function ($item) {
                 return "{$item['date']} {$item['close']}({$item['volume']})";
             }, $history));

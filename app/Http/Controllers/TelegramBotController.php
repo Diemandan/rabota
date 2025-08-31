@@ -35,11 +35,14 @@ class TelegramBotController extends Controller
         $service->sendMessage('test');
     }
 
-    public function webhookUpdates(Request $request)
+    public function webhookUpdates(Request $request, TelegramService $service)
     {
+        $aiAnalyzer = new AIAnalyzer();
         $update = $request->all();
 
-        $this->telegramService->processUpdate($update);
+        $clientMessage = $this->telegramService->processUpdate($update);
+        $aiAnswer = $aiAnalyzer->chatWithWebSearch($clientMessage);
+        $service->sendMessage($aiAnswer);
 
         return response()->json(['status' => 'ok']);
     }

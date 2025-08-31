@@ -44,6 +44,10 @@ class TelegramService
         return $this->sendMessage('Ваше сообщение получено и будет обработано в ближайшее время!');
     }
 
+    /**
+     * @param array $update
+     * @return string|null
+     */
     public function processUpdate(array $update)
     {
         $chatId = $update['message']['chat']['id'] ?? null;
@@ -62,7 +66,7 @@ class TelegramService
             );
         }
 
-        return $this->sendMessage('Ваше сообщение получено и будет обработано в ближайшее время!');
+        return $text;
     }
 
     public function sendMessage($text)
