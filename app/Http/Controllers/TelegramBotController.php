@@ -39,6 +39,11 @@ class TelegramBotController extends Controller
     {
         $aiAnalyzer = new AIAnalyzer();
         $update = $request->all();
+        $text = $update['message']['text'] ?? null;
+
+        if (!isset($update['message']['text']) || !$text) {
+            return response()->json(['status' => 'ignored']);
+        }
 
         $clientMessage = $this->telegramService->processUpdate($update);
         $aiAnswer = $aiAnalyzer->chatWithWebSearch($clientMessage);
