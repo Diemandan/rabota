@@ -42,6 +42,10 @@ class TelegramBotController extends Controller
         $text = $update['message']['text'] ?? null;
 
         if (!isset($update['message']['text']) || !$text) {
+            Log::info('Webhook update received at ' . now()->toDateTimeString(), [
+                'update' => $update
+            ]);
+
             return response()->json(['status' => 'ignored']);
         }
 
