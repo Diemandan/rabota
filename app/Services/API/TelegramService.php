@@ -68,9 +68,12 @@ class TelegramService
     public function sendMessage($text)
     {
         $maxLength = 4000;
-        $messages = str_split($text, $maxLength);
+        $encoding = 'UTF-8';
+        $length = mb_strlen($text, $encoding);
 
-        foreach ($messages as $msg) {
+        for ($i = 0; $i < $length; $i += $maxLength) {
+            $msg = mb_substr($text, $i, $maxLength, $encoding);
+
             $this->botApi->sendMessage([
                 'chat_id' => config('services.telegram.chat_id'),
                 'text' => $msg
