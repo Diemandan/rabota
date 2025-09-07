@@ -27,6 +27,9 @@ return [
     'openai' => [
         'api_key' => env('OPENAI_FINANCE_API_KEY'),
     ],
+    'bright_data' => [
+        'proxy_url' => env('PROXY_URL'),
+    ],
     'telegram' => [
         'chat_id' => env('TELEGRAM_CHAT_ID'),
         'token' => env('TELEGRAM_BOT_TOKEN'),

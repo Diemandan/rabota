@@ -14,7 +14,7 @@ class AIAnalyzer
     public function __construct()
     {
         $this->apiKey = config('services.openai.api_key');
-        $this->proxy = 'http://brd-customer-hl_f757f912-zone-residential_ai:xacclk58p5fm@brd.superproxy.io:33335';
+        $this->proxy = config('services.bright_data.proxy_url');
 
         $this->guzzle = new Client([
             'base_uri' => 'https://api.openai.com/v1/',
