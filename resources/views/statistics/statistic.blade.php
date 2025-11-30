@@ -22,7 +22,7 @@
     @endphp
 
     <div class="container">
-        <h2 class="mb-4"><i class="bi bi-bar-chart-line"></i> Годовая статистика</h2>
+        <h2 class="mb-4 text-center text-md-start"><i class="bi bi-bar-chart-line"></i> Годовая статистика</h2>
 
         <!-- Текущий год -->
         <div class="card mb-4 shadow-sm">

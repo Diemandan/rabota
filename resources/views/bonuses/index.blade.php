@@ -2,14 +2,15 @@
 
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="bi bi-graph-up"></i> Корректировки</h2>
-            <a href="{{ route('bonus.create') }}" class="btn btn-primary">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+            <h2 class="mb-0"><i class="bi bi-graph-up"></i> Корректировки</h2>
+            <a href="{{ route('bonus.create') }}" class="btn btn-primary w-100 w-md-auto">
                 <i class="bi bi-plus-circle"></i> Создать запись
             </a>
         </div>
 
-        <div class="table-responsive">
+        <!-- Десктопная версия таблицы -->
+        <div class="table-responsive d-none d-md-block">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                 <tr>
@@ -149,6 +150,86 @@
                 @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Мобильная версия - карточки -->
+        <div class="d-md-none">
+            @forelse($bonuses as $bonus)
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">
+                                    <i class="bi bi-graph-up"></i> Корректировка #{{ $loop->index + ($bonuses->perPage() * ($bonuses->currentPage() - 1)) + 1 }}
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-12">
+                                <small class="text-muted d-block"><i class="bi bi-calendar-range"></i> Период каденции</small>
+                                <strong>
+                                    с {{ \Carbon\Carbon::parse($bonus->cadence->start)->format('d.m.Y') }}
+                                    @if($bonus->cadence->finish)
+                                        по {{ \Carbon\Carbon::parse($bonus->cadence->finish)->format('d.m.Y') }}
+                                    @else
+                                        <span class="badge bg-secondary">Не завершена</span>
+                                    @endif
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-currency-euro"></i> Сумма</small>
+                                <strong class="text-success">{{ number_format($bonus->transfer_amount, 2, ',', ' ') }} €</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-calendar"></i> Дата перевода</small>
+                                <strong>{{ \Carbon\Carbon::parse($bonus->transfer_date)->format('d.m.Y') }}</strong>
+                            </div>
+                        </div>
+
+                        @if($bonus->description)
+                        <div class="mb-2">
+                            <small class="text-muted d-block"><i class="bi bi-file-text"></i> Описание</small>
+                            <p class="mb-0">{{ $bonus->description }}</p>
+                        </div>
+                        @endif
+
+                        <hr class="my-2">
+
+                        <div class="d-grid gap-2">
+                            <div class="btn-group" role="group">
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editBonusModal{{ $bonus->id }}">
+                                    <i class="bi bi-pencil"></i> Редактировать
+                                </button>
+                                <form action="{{ route('bonus.delete', $bonus->id) }}" method="POST" style="display: inline; flex: 1;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-danger w-100"
+                                            onclick="return confirm('Вы уверены, что хотите удалить эту корректировку?')">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                        <p class="text-muted mt-2">Что-нибудь да купим ещё. Не переживай</p>
+                    </div>
+                </div>
+            @endforelse
         </div>
 
         @if($bonuses->hasPages())

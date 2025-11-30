@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="bi bi-piggy-bank"></i> Планирование бюджета</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBudgetModal">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+            <h2 class="mb-0"><i class="bi bi-piggy-bank"></i> Планирование бюджета</h2>
+            <button type="button" class="btn btn-primary w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#addBudgetModal">
                 <i class="bi bi-plus-circle"></i> Создать запись
             </button>
         </div>
@@ -12,22 +12,24 @@
         <!-- Фильтр по месяцам -->
         <div class="card mb-4">
             <div class="card-body">
-                <div class="d-flex align-items-center flex-wrap gap-2">
-                    <span class="fw-bold">Выбрать период:</span>
-                    <a href="{{ route('budget.index') }}?all"
-                       class="btn btn-sm {{ !request()->has('month') && !request()->has('all') ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Текущий месяц
-                    </a>
-                    <a href="{{ route('budget.index') }}?all"
-                       class="btn btn-sm {{ request()->has('all') ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Все
-                    </a>
-                    @foreach ($months as $month)
-                        <a href="{{ route('budget.index', ['month' => $month]) }}"
-                           class="btn btn-sm {{ request('month') == $month ? 'btn-primary' : 'btn-outline-primary' }}">
-                            {{ \Carbon\Carbon::parse($month . '-01')->format('M Y') }}
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                    <span class="fw-bold mb-2 mb-md-0">Выбрать период:</span>
+                    <div class="d-flex flex-wrap gap-2 w-100 w-md-auto">
+                        <a href="{{ route('budget.index') }}?all"
+                           class="btn btn-sm {{ !request()->has('month') && !request()->has('all') ? 'btn-primary' : 'btn-outline-primary' }}">
+                            Текущий месяц
                         </a>
-                    @endforeach
+                        <a href="{{ route('budget.index') }}?all"
+                           class="btn btn-sm {{ request()->has('all') ? 'btn-primary' : 'btn-outline-primary' }}">
+                            Все
+                        </a>
+                        @foreach ($months as $month)
+                            <a href="{{ route('budget.index', ['month' => $month]) }}"
+                               class="btn btn-sm {{ request('month') == $month ? 'btn-primary' : 'btn-outline-primary' }}">
+                                {{ \Carbon\Carbon::parse($month . '-01')->format('M Y') }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,7 +45,8 @@
             </div>
         </div>
 
-        <div class="table-responsive">
+        <!-- Десктопная версия таблицы -->
+        <div class="table-responsive d-none d-md-block">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                 <tr>
@@ -182,6 +185,76 @@
                 @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Мобильная версия - карточки -->
+        <div class="d-md-none">
+            @forelse($budgets as $budget)
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">
+                                    <i class="bi bi-wallet"></i> Запись #{{ $loop->index + 1 }}
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-12">
+                                <small class="text-muted d-block"><i class="bi bi-file-text"></i> Назначение</small>
+                                <strong>{{ $budget->title }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-currency-euro"></i> Сумма</small>
+                                <strong class="text-danger">{{ number_format($budget->cash, 2, ',', ' ') }} €</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-calendar-month"></i> Месяц траты</small>
+                                <strong>
+                                    <span class="badge bg-secondary">
+                                        {{ \Carbon\Carbon::parse($budget->month . '-01')->format('M Y') }}
+                                    </span>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="d-grid gap-2">
+                            <div class="btn-group" role="group">
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editBudgetModal{{ $budget->id }}">
+                                    <i class="bi bi-pencil"></i> Редактировать
+                                </button>
+                                <form action="{{ route('budget.delete', $budget->id) }}" method="POST" style="display: inline; flex: 1;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-danger w-100"
+                                            onclick="return confirm('Вы уверены, что хотите удалить эту запись бюджета?')">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                        <p class="text-muted mt-2">Нет записей бюджета для отображения</p>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
 

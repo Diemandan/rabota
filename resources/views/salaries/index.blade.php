@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="bi bi-cash-stack"></i> Переводы</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSalaryModal">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+            <h2 class="mb-0"><i class="bi bi-cash-stack"></i> Переводы</h2>
+            <button type="button" class="btn btn-primary w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#addSalaryModal">
                 <i class="bi bi-plus-circle"></i> Создать запись
             </button>
         </div>
@@ -12,18 +12,20 @@
         <!-- Фильтр по каденциям -->
         <div class="card mb-4">
             <div class="card-body">
-                <div class="d-flex align-items-center flex-wrap gap-2">
-                    <span class="fw-bold">Выбрать каденцию:</span>
-                    <a href="{{ route('salaries.index') }}"
-                       class="btn btn-sm {{ !request()->has('cadence_id') ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Все
-                    </a>
-                    @foreach ($cadences as $cadence)
-                        <a href="{{ route('salaries.index', ['cadence_id' => $cadence->id]) }}"
-                           class="btn btn-sm {{ request('cadence_id') == $cadence->id ? 'btn-primary' : 'btn-outline-primary' }}">
-                            {{ \Carbon\Carbon::parse($cadence->start)->format('d.m.Y') }}
+                <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center flex-wrap gap-2">
+                    <span class="fw-bold mb-2 mb-md-0">Выбрать каденцию:</span>
+                    <div class="d-flex flex-wrap gap-2 w-100 w-md-auto">
+                        <a href="{{ route('salaries.index') }}"
+                           class="btn btn-sm {{ !request()->has('cadence_id') ? 'btn-primary' : 'btn-outline-primary' }}">
+                            Все
                         </a>
-                    @endforeach
+                        @foreach ($cadences as $cadence)
+                            <a href="{{ route('salaries.index', ['cadence_id' => $cadence->id]) }}"
+                               class="btn btn-sm {{ request('cadence_id') == $cadence->id ? 'btn-primary' : 'btn-outline-primary' }}">
+                                {{ \Carbon\Carbon::parse($cadence->start)->format('d.m.Y') }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,7 +48,8 @@
             </div>
         @endif
 
-        <div class="table-responsive">
+        <!-- Десктопная версия таблицы -->
+        <div class="table-responsive d-none d-md-block">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                 <tr>
@@ -203,6 +206,83 @@
                 @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Мобильная версия - карточки -->
+        <div class="d-md-none">
+            @forelse($salaries as $salary)
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">
+                                    <i class="bi bi-wallet2"></i> Перевод #@if ($salaries instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+                                {{ $loop->index + $salaries->perPage() * ($salaries->currentPage() - 1) + 1 }}
+                            @else
+                                {{ $loop->index + 1 }}
+                            @endif
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-12">
+                                <small class="text-muted d-block"><i class="bi bi-calendar-range"></i> Каденция</small>
+                                <strong>
+                                    с {{ \Carbon\Carbon::parse($salary->cadence->start)->format('d.m.Y') }}
+                                    @if($salary->cadence->finish)
+                                        по {{ \Carbon\Carbon::parse($salary->cadence->finish)->format('d.m.Y') }}
+                                    @else
+                                        <span class="badge bg-secondary">Не завершена</span>
+                                    @endif
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-currency-euro"></i> Сумма</small>
+                                <strong class="text-success">{{ number_format($salary->transfer_amount, 2, ',', ' ') }} €</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-calendar"></i> Дата перевода</small>
+                                <strong>{{ \Carbon\Carbon::parse($salary->transfer_date)->format('d.m.Y') }}</strong>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="d-grid gap-2">
+                            <div class="btn-group" role="group">
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editSalaryModal{{ $salary->id }}">
+                                    <i class="bi bi-pencil"></i> Редактировать
+                                </button>
+                                <form action="{{ route('salary.delete', $salary->id) }}" method="POST" style="display: inline; flex: 1;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-danger w-100"
+                                            onclick="return confirm('Вы уверены, что хотите удалить этот перевод?')">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                        <p class="text-muted mt-2">Нет переводов для отображения</p>
+                    </div>
+                </div>
+            @endforelse
         </div>
 
         @if($salaries instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator && $salaries->hasPages())

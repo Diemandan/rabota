@@ -2,23 +2,23 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Bootstrap 5.3.3 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        
+
         <!-- Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        
+
         <!-- jQuery UI CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"/>
-        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-        
+
         <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     </head>
@@ -47,7 +47,7 @@
         </header>
 
     <!-- Toast контейнер для уведомлений -->
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055; max-width: 100%;">
         @if ($errors->any())
             <div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
                 <div class="d-flex">
@@ -128,7 +128,7 @@
 
     <div class="container-fluid">
             <div class="row">
-                <nav style="height: calc(100vh - 48px);" id="sidebarMenu" class="col-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <nav style="height: calc(100vh - 48px);" id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                     <div class="position-sticky pt-3 sidebar-sticky">
 
                         @include('inc.navigation')
@@ -136,7 +136,7 @@
                     </div>
                 </nav>
 
-                <div class="col-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
+                <div class="col-12 col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
 
                     @yield('content')
 

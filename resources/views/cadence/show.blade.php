@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="bi bi-calendar-range"></i> Детали каденции</h2>
-            <div class="d-flex gap-2">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+            <h2 class="mb-0"><i class="bi bi-calendar-range"></i> Детали каденции</h2>
+            <div class="d-flex flex-column flex-sm-row gap-2 w-100 w-md-auto">
                 <a class="btn btn-outline-primary" href="{{ route('cadence.exportPdf', $cadence->id) }}">
                     <i class="bi bi-file-pdf"></i> Export to PDF
                 </a>
@@ -30,7 +30,7 @@
                     <div class="card-body">
                         <h5 class="card-title"><i class="bi bi-calendar-event"></i> Период</h5>
                         <p class="mb-1"><strong>Начало:</strong> <span class="badge bg-primary">{{ \Carbon\Carbon::parse($cadence->start)->format('d.m.Y H:i') }}</span></p>
-                        <p class="mb-1"><strong>Конец:</strong> 
+                        <p class="mb-1"><strong>Конец:</strong>
                             @if($cadence->finish)
                                 <span class="badge bg-primary">{{ \Carbon\Carbon::parse($cadence->finish)->format('d.m.Y H:i') }}</span>
                             @else
@@ -47,7 +47,7 @@
                         <h5 class="card-title"><i class="bi bi-wallet2"></i> Финансы</h5>
                         <p class="mb-1"><strong>Всего переведено:</strong> <span class="badge bg-info">{{ number_format($cadence->totalAmount, 2, ',', ' ') }} €</span></p>
                         <p class="mb-1"><strong>Остаток на начало:</strong> <span class="badge bg-success">{{ number_format($cadence->startDebt, 2, ',', ' ') }} €</span></p>
-                        <p class="mb-0"><strong>Всего остаток:</strong> 
+                        <p class="mb-0"><strong>Всего остаток:</strong>
                             <span class="badge bg-{{ $cadence->totalBalance >= 0 ? 'success' : 'danger' }}">
                                 {{ number_format($cadence->totalBalance, 2, ',', ' ') }} €
                             </span>
@@ -59,9 +59,9 @@
 
         <hr>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><i class="bi bi-cash-stack"></i> Начисления</h3>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSalaryModal">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+            <h3 class="mb-0"><i class="bi bi-cash-stack"></i> Начисления</h3>
+            <button type="button" class="btn btn-primary w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#addSalaryModal">
                 <i class="bi bi-plus-circle"></i> Внести зачисление
             </button>
         </div>
@@ -81,9 +81,9 @@
                         <input type="hidden" name="cadence_id" value="{{ $cadence->id }}">
                         <div class="modal-body">
                             <div class="form-floating mb-3">
-                                <input type="date" 
-                                       class="form-control @error('transfer_date') is-invalid @enderror" 
-                                       id="transfer_date" 
+                                <input type="date"
+                                       class="form-control @error('transfer_date') is-invalid @enderror"
+                                       id="transfer_date"
                                        name="transfer_date"
                                        value="{{ old('transfer_date', date('Y-m-d')) }}"
                                        required
@@ -99,9 +99,9 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="number" 
-                                       class="form-control @error('transfer_amount') is-invalid @enderror" 
-                                       id="transfer_amount" 
+                                <input type="number"
+                                       class="form-control @error('transfer_amount') is-invalid @enderror"
+                                       id="transfer_amount"
                                        name="transfer_amount"
                                        value="{{ old('transfer_amount') }}"
                                        min="0.01"
@@ -131,7 +131,8 @@
             </div>
         </div>
 
-        <div class="table-responsive">
+        <!-- Десктопная версия таблицы зарплат -->
+        <div class="table-responsive d-none d-md-block">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                 <tr>
@@ -149,7 +150,7 @@
                         <td><strong>{{ number_format($salary->transfer_amount, 2, ',', ' ') }} €</strong></td>
                         <td>
                             <div class="d-flex justify-content-end gap-2">
-                                <button type="button" 
+                                <button type="button"
                                         class="btn btn-sm btn-outline-primary"
                                         data-bs-toggle="modal"
                                         data-bs-target="#editSalaryModal{{ $salary->id }}"
@@ -159,7 +160,7 @@
                                 <form action="{{ route('salary.delete', $salary->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
+                                    <button type="submit"
                                             class="btn btn-sm btn-outline-danger"
                                             onclick="return confirm('Вы уверены, что хотите удалить этот перевод?')"
                                             title="Удалить">
@@ -187,9 +188,9 @@
                                     <input type="hidden" name="cadence_id" value="{{ $cadence->id }}">
                                     <div class="modal-body">
                                         <div class="form-floating mb-3">
-                                            <input type="date" 
-                                                   class="form-control @error('transfer_date') is-invalid @enderror" 
-                                                   id="transfer_date{{ $salary->id }}" 
+                                            <input type="date"
+                                                   class="form-control @error('transfer_date') is-invalid @enderror"
+                                                   id="transfer_date{{ $salary->id }}"
                                                    name="transfer_date"
                                                    value="{{ old('transfer_date', $salary->transfer_date) }}"
                                                    required
@@ -205,9 +206,9 @@
                                         </div>
 
                                         <div class="form-floating mb-3">
-                                            <input type="number" 
-                                                   class="form-control @error('transfer_amount') is-invalid @enderror" 
-                                                   id="transfer_amount{{ $salary->id }}" 
+                                            <input type="number"
+                                                   class="form-control @error('transfer_amount') is-invalid @enderror"
+                                                   id="transfer_amount{{ $salary->id }}"
                                                    name="transfer_amount"
                                                    value="{{ old('transfer_amount', $salary->transfer_amount) }}"
                                                    min="0.01"
@@ -248,8 +249,68 @@
             </table>
         </div>
 
+        <!-- Мобильная версия - карточки зарплат -->
+        <div class="d-md-none">
+            @forelse($cadence->salaries as $salary)
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">
+                                    <i class="bi bi-wallet2"></i> Перевод #{{ $loop->index + 1 }}
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-calendar"></i> Дата</small>
+                                <strong>{{ \Carbon\Carbon::parse($salary->transfer_date)->format('d.m.Y') }}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-currency-euro"></i> Сумма</small>
+                                <strong class="text-success">{{ number_format($salary->transfer_amount, 2, ',', ' ') }} €</strong>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="d-grid gap-2">
+                            <div class="btn-group" role="group">
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editSalaryModal{{ $salary->id }}">
+                                    <i class="bi bi-pencil"></i> Редактировать
+                                </button>
+                                <form action="{{ route('salary.delete', $salary->id) }}" method="POST" style="display: inline; flex: 1;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-danger w-100"
+                                            onclick="return confirm('Вы уверены, что хотите удалить этот перевод?')">
+                                        <i class="bi bi-trash"></i> Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                        <p class="text-muted mt-2">Зарплата еще не начислялась за эту каденцию</p>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+
         <h3 class="mt-4"><i class="bi bi-cart"></i> Покупки за свои</h3>
-        <div class="table-responsive">
+        <!-- Десктопная версия таблицы покупок -->
+        <div class="table-responsive d-none d-md-block">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                 <tr>
@@ -277,6 +338,50 @@
                 @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Мобильная версия - карточки покупок -->
+        <div class="d-md-none">
+            @forelse($cadence->expenses as $expense)
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">
+                                    <i class="bi bi-cart"></i> Покупка #{{ $loop->index + 1 }}
+                                </h5>
+                            </div>
+                        </div>
+
+                        <hr class="my-2">
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-calendar"></i> Дата</small>
+                                <strong>{{ \Carbon\Carbon::parse($expense->payment_date)->format('d.m.Y') }}</strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block"><i class="bi bi-currency-euro"></i> Сумма</small>
+                                <strong class="text-danger">{{ number_format($expense->payment_amount, 2, ',', ' ') }} €</strong>
+                            </div>
+                        </div>
+
+                        @if($expense->description)
+                        <div class="mb-2">
+                            <small class="text-muted d-block"><i class="bi bi-file-text"></i> Описание</small>
+                            <p class="mb-0">{{ $expense->description }}</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="card">
+                    <div class="card-body text-center py-4">
+                        <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                        <p class="text-muted mt-2">Покупок за свои не было за эту каденцию</p>
+                    </div>
+                </div>
+            @endforelse
         </div>
 
 
