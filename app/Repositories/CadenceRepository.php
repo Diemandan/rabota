@@ -19,24 +19,24 @@ class CadenceRepository
     }
 
 
-    public function create(array $data)
+    public function create(array $data): void
     {
         $cadence = $this->model->create($data);
         $cadence->debt()->create($data);
     }
 
-    public function update(array $data)
+    public function update(array $data): void
     {
         $model = $this->model->find($data['id']);
         $model->update($data);
     }
 
-    public function find($id): Model
+    public function find(int $id): Model
     {
         return $this->model->with('salaries', 'debt')->find($id);
     }
 
-    public function getLatest()
+    public function getLatest(): ?Model
     {
         return $this->model->with('debt', 'bonuses')->latest()->first();
     }
@@ -56,7 +56,7 @@ class CadenceRepository
         return $this->model->select(['id', 'start'])->latest()->get();
     }
 
-    public function delete($id)
+    public function delete(int $id): void
     {
         $this->model->destroy($id);
     }

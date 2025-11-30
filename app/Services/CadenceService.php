@@ -5,18 +5,15 @@ namespace App\Services;
 
 use App\Http\Requests\CadenceRequest;
 use App\Models\Cadence;
-use App\Models\Salary;
-use App\Repositories\cadenceRepository;
+use App\Repositories\CadenceRepository;
 use Carbon\Carbon;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Session\Store;
 
 class CadenceService
 {
-    protected cadenceRepository $cadenceRepository;
+    protected CadenceRepository $cadenceRepository;
 
     protected SalaryService $salaryService;
 
@@ -44,7 +41,9 @@ class CadenceService
 
         foreach ($cadences as $cadence) {
             $cadence['start'] = Carbon::parse($cadence['start'])->format('Y-m-d H:i');
-            $cadence['finish'] = Carbon::parse($cadence['finish'])->format('Y-m-d H:i');
+            $cadence['finish'] = $cadence['finish'] 
+                ? Carbon::parse($cadence['finish'])->format('Y-m-d H:i') 
+                : null;
             $cadence->totalBalance = $this->getTotalDebt($cadence);
             $cadence->totalDays = $this->getTotalDays($cadence);
             $cadence->totalSalariesPayments = $this->salaryService->getSalariesSumByCadenceId($cadence->id);
@@ -54,7 +53,7 @@ class CadenceService
     }
 
 
-    public function getCadence($id)
+    public function getCadence(int $id): Model
     {
         $cadence = $this->cadenceRepository->find($id);
 
@@ -66,7 +65,7 @@ class CadenceService
         return $cadence;
     }
 
-    public function getCadencesList()
+    public function getCadencesList(): Collection
     {
         $cadences = $this->cadenceRepository->cadencesList();
 
@@ -99,7 +98,7 @@ class CadenceService
         }
     }
 
-    public function delete($id): void
+    public function delete(int $id): void
     {
         $this->cadenceRepository->delete($id);
     }
@@ -119,7 +118,9 @@ class CadenceService
     private function getTotalDays(Model $cadence): int|float
     {
         $startDate = Carbon::parse($cadence->start, 2)->startOfDay();
-        $endDate = Carbon::parse($cadence->finish, 2)->startOfDay();
+        $endDate = $cadence->finish 
+            ? Carbon::parse($cadence->finish, 2)->startOfDay() 
+            : Carbon::now(2)->startOfDay();
 
         $days = $endDate->diffInDays($startDate) + 1; // Add 1 for the current day
         return $days;

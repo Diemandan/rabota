@@ -4,28 +4,24 @@
 namespace App\Services;
 
 use App\Http\Requests\CadenceRequest;
-use App\Models\Cadence;
-use App\Repositories\cadenceRepository;
+use App\Repositories\CadenceRepository;
 use App\Repositories\SalaryRepository;
 use Carbon\Carbon;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Session\Store;
 
 class StatisticService
 {
     public function __construct(
        protected CadenceRepository $cadenceRepository,
        protected SalaryRepository $salaryRepository,
+       protected SalaryService $salaryService,
        protected BonusService $bonusService,
        protected ExpenseService $expenseService)
     {
     }
 
 
-    public function getTotalInfo()
+    public function getTotalInfo(): array
     {
         $yearSalary = $this->salaryRepository->totalYearSalary()->sum('transfer_amount');
         $lastYearSalary = $this->salaryRepository->totalLastYearSalary()->sum('transfer_amount');
@@ -58,7 +54,7 @@ class StatisticService
         }
     }
 
-    public function delete($id): void
+    public function delete(int $id): void
     {
         $this->cadenceRepository->delete($id);
     }
@@ -77,8 +73,10 @@ class StatisticService
 
     private function getTotalDays(Model $cadence): int
     {
-        $startDate = Carbon::parse($cadence->start, 2);
-        $endDate = Carbon::parse($cadence->finish, 2);
+        $startDate = Carbon::parse($cadence->start, 2)->startOfDay();
+        $endDate = $cadence->finish 
+            ? Carbon::parse($cadence->finish, 2)->startOfDay() 
+            : Carbon::now(2)->startOfDay();
 
         $days = $endDate->diffInDays($startDate) + 1;
 
