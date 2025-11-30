@@ -58,6 +58,10 @@ class SalaryRepository
         return $this->model->where('cadence_id', $id)->sum('transfer_amount');
     }
 
+    public function find(int $id)
+    {
+        return $this->model->find($id);
+    }
 
     public function delete($id)
     {

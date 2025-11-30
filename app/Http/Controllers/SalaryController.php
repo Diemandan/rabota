@@ -34,10 +34,15 @@ class SalaryController extends Controller
         ]);
         $cadenceId = $request->cadence_id;
 
-        $cadences = $this->cadenceService->getCadencesList();
+        $cadencesForFilter = $this->cadenceService->getCadencesList();
+        $cadencesForForm = $this->cadenceRepository->all();
         $salaries = $this->salaryService->getAll($cadenceId);
 
-        return view('salaries.index', compact('salaries', 'cadences'));
+        return view('salaries.index', [
+            'salaries' => $salaries,
+            'cadences' => $cadencesForFilter,
+            'cadencesForForm' => $cadencesForForm
+        ]);
     }
 
     /**
@@ -52,18 +57,20 @@ class SalaryController extends Controller
 
     public function store(SalaryRequest $request)
     {
-        if ($request->validated()) {
-            $this->salaryService->create($request);
+        $this->salaryService->create($request);
+        return redirect()->back()->with('success', 'Перевод успешно добавлен.');
+    }
 
-            return redirect()->route('cadences.index')->with('success', 'Salary added successfully.');
-        }
-
-        return redirect()->back()->withErrors($request->errors())->withInput();
+    public function update(SalaryRequest $request, int $id)
+    {
+        $request->merge(['id' => $id]);
+        $this->salaryService->update($request);
+        return redirect()->back()->with('success', 'Перевод успешно обновлен.');
     }
 
     public function delete($id)
     {
         $this->salaryService->delete($id);
-        return redirect()->back()->with('success', 'Salary deleted successfully.');
+        return redirect()->back()->with('success', 'Перевод успешно удален.');
     }
 }

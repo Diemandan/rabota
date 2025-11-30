@@ -22,10 +22,11 @@ class ExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cadence_id' => 'required',
-            'payment_date' => 'required',
-            'payment_amount' => 'required|min:1|not_in:0',
-            'description' => 'nullable|required'
+            'id' => 'sometimes|integer|exists:expenses,id',
+            'cadence_id' => 'required|integer|exists:cadences,id',
+            'payment_date' => 'required|date',
+            'payment_amount' => 'required|numeric|min:0.01',
+            'description' => 'nullable|string|max:500'
         ];
     }
 }

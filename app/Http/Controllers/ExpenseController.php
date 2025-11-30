@@ -34,18 +34,20 @@ class ExpenseController extends Controller
 
     public function store(ExpenseRequest $request)
     {
-        if ($request->validated()) {
-            $this->expenseService->create($request);
+        $this->expenseService->create($request);
+        return redirect()->route('expenses.index')->with('success', 'Покупка успешно добавлена.');
+    }
 
-            return redirect()->route('expenses.index')->with('success', 'Expense added successfully.');
-        }
-
-        return redirect()->back()->withErrors($request->errors())->withInput();
+    public function update(ExpenseRequest $request, int $id)
+    {
+        $request->merge(['id' => $id]);
+        $this->expenseService->update($request);
+        return redirect()->route('expenses.index')->with('success', 'Покупка успешно обновлена.');
     }
 
     public function delete($id): \Illuminate\Http\RedirectResponse
     {
         $this->expenseService->delete($id);
-        return redirect()->route('expenses.index')->with('success', 'Payment deleted successfully.');
+        return redirect()->route('expenses.index')->with('success', 'Покупка успешно удалена.');
     }
 }

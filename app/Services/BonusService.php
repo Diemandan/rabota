@@ -32,6 +32,12 @@ class BonusService
         $this->bonusRepository->create($data);
     }
 
+    public function update(BonusRequest $request): void
+    {
+        $data = $request->except('_token');
+        $this->bonusRepository->update($data);
+    }
+
     public function delete($id): void
     {
         $this->bonusRepository->delete($id);
@@ -40,6 +46,11 @@ class BonusService
     public function getAll(): LengthAwarePaginator
     {
         return $this->bonusRepository->all();
+    }
+
+    public function find(int $id)
+    {
+        return $this->bonusRepository->find($id);
     }
 
 }

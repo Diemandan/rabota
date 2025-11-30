@@ -1,57 +1,177 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
-
-
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Период каденции</th>
-                <th scope="col">Сумма</th>
-                <th scope="col">Дата перевода</th>
-                <th scope="col">Описание</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            @foreach($bonuses as $bonus)
-                <tr>
-                    <th scope="row">{{ $loop->index + ($bonuses->perPage() * ($bonuses->currentPage() - 1)) + 1 }}</th>
-                    <td>с {{ \Carbon\Carbon::parse($bonus->cadence->start)->format('Y-m-d') }} по {{ \Carbon\Carbon::parse($bonus->cadence->finish)->format('Y-m-d') }}</td>
-                    <td>{{$bonus->transfer_amount}}</td>
-                    <td>{{$bonus->transfer_date}}</td>
-                    <td>{{$bonus->description}}</td>
-                    <td>
-                        <div class="d-flex flex-row bd-highlight mb-3">
-                            <form action="{{ route('bonus.delete', $bonus->id) }}" method="POST"
-                                  style="display: inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Are you sure?')">Delete
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-@if($bonuses->isEmpty())
-<h3> Что-нибудь да купим ещё. Не переживай </h3>
-@endif
-        <div class="row mb-3">
-            <div class="col-sm-6">
-                <a href="{{ route('bonus.create') }}" class="btn btn-primary">Создать запись</a>
-            </div>
-            <div class="pagination justify-content-center">
-                {{ $bonuses->links('pagination::bootstrap-4') }}
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="bi bi-graph-up"></i> Корректировки</h2>
+            <a href="{{ route('bonus.create') }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Создать запись
+            </a>
         </div>
 
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"><i class="bi bi-calendar-range"></i> Период каденции</th>
+                    <th scope="col"><i class="bi bi-currency-euro"></i> Сумма</th>
+                    <th scope="col"><i class="bi bi-calendar"></i> Дата перевода</th>
+                    <th scope="col"><i class="bi bi-file-text"></i> Описание</th>
+                    <th scope="col" class="text-end"><i class="bi bi-gear"></i> Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($bonuses as $bonus)
+                    <tr>
+                        <th scope="row">{{ $loop->index + ($bonuses->perPage() * ($bonuses->currentPage() - 1)) + 1 }}</th>
+                        <td>
+                            с {{ \Carbon\Carbon::parse($bonus->cadence->start)->format('d.m.Y') }}
+                            @if($bonus->cadence->finish)
+                                по {{ \Carbon\Carbon::parse($bonus->cadence->finish)->format('d.m.Y') }}
+                            @else
+                                <span class="badge bg-secondary">Не завершена</span>
+                            @endif
+                        </td>
+                        <td><strong>{{ number_format($bonus->transfer_amount, 2, ',', ' ') }} €</strong></td>
+                        <td>{{ \Carbon\Carbon::parse($bonus->transfer_date)->format('d.m.Y') }}</td>
+                        <td>{{ $bonus->description ?? '-' }}</td>
+                        <td>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editBonusModal{{ $bonus->id }}"
+                                        title="Редактировать">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form action="{{ route('bonus.delete', $bonus->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Вы уверены, что хотите удалить эту корректировку?')"
+                                            title="Удалить">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Modal для редактирования корректировки -->
+                    <div class="modal fade" id="editBonusModal{{ $bonus->id }}" tabindex="-1" aria-labelledby="editBonusModalLabel{{ $bonus->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editBonusModalLabel{{ $bonus->id }}">
+                                        <i class="bi bi-pencil"></i> Редактировать корректировку
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ route('bonus.update', $bonus->id) }}" method="POST" class="needs-validation" novalidate>
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="id" value="{{ $bonus->id }}">
+                                    <input type="hidden" name="cadence_id" value="{{ $bonus->cadence_id }}">
+                                    <div class="modal-body">
+                                        <div class="form-floating mb-3">
+                                            <input type="date"
+                                                   class="form-control @error('transfer_date') is-invalid @enderror"
+                                                   id="transfer_date{{ $bonus->id }}"
+                                                   name="transfer_date"
+                                                   value="{{ old('transfer_date', $bonus->transfer_date) }}"
+                                                   required
+                                                   placeholder="Дата перевода">
+                                            <label for="transfer_date{{ $bonus->id }}">
+                                                <i class="bi bi-calendar"></i> Дата перевода
+                                            </label>
+                                            @error('transfer_date')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @else
+                                                <div class="invalid-feedback">Пожалуйста, выберите дату</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input type="number"
+                                                   class="form-control @error('transfer_amount') is-invalid @enderror"
+                                                   id="transfer_amount{{ $bonus->id }}"
+                                                   name="transfer_amount"
+                                                   value="{{ old('transfer_amount', $bonus->transfer_amount) }}"
+                                                   min="0.01"
+                                                   step="0.01"
+                                                   required
+                                                   placeholder="Сумма">
+                                            <label for="transfer_amount{{ $bonus->id }}">
+                                                <i class="bi bi-currency-euro"></i> Сумма (€)
+                                            </label>
+                                            @error('transfer_amount')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @else
+                                                <div class="invalid-feedback">Пожалуйста, введите корректную сумму</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <textarea class="form-control @error('description') is-invalid @enderror"
+                                                      id="description{{ $bonus->id }}"
+                                                      name="description"
+                                                      placeholder="Описание"
+                                                      style="height: 100px">{{ old('description', $bonus->description) }}</textarea>
+                                            <label for="description{{ $bonus->id }}">
+                                                <i class="bi bi-file-text"></i> Описание
+                                            </label>
+                                            @error('description')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-circle"></i> Отмена
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-check-lg"></i> Сохранить изменения
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                            <p class="text-muted mt-2">Что-нибудь да купим ещё. Не переживай</p>
+                        </td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        @if($bonuses->hasPages())
+            <div class="d-flex justify-content-center mt-4">
+                {{ $bonuses->links('pagination::bootstrap-5') }}
+            </div>
+        @endif
     </div>
 
+    <script>
+        // Клиентская валидация Bootstrap для модальных форм
+        (function() {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 @endsection

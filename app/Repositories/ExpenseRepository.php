@@ -27,10 +27,16 @@ class ExpenseRepository
     {
         return $this->model->where('cadence_id', $id)->sum('payment_amount');
     }
+
     public function update(array $data)
     {
         $model = $this->model->find($data['id']);
         $model->update($data);
+    }
+
+    public function find(int $id)
+    {
+        return $this->model->find($id);
     }
 
     public function delete($id)

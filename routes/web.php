@@ -48,16 +48,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/salaries/index', [SalaryController::class, 'index'])->name('salaries.index');
     Route::get('/salary/create', [SalaryController::class, 'create'])->name('salary.create');
     Route::post('/salary/create', [SalaryController::class, 'store'])->name('salary.store');
+    Route::put('/salary/{id}/update', [SalaryController::class, 'update'])->name('salary.update');
     Route::delete('/salary/{id}/delete', [SalaryController::class, 'delete'])->name('salary.delete');
 
     Route::get('/expenses/index', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::get('/expense/create', [ExpenseController::class, 'create'])->name('expense.create');
     Route::post('/expenses/create', [ExpenseController::class, 'store'])->name('expense.store');
+    Route::put('/expense/{id}/update', [ExpenseController::class, 'update'])->name('expense.update');
     Route::delete('/expense/{id}/delete', [ExpenseController::class, 'delete'])->name('expense.delete');
 
     Route::get('/bonuses/index', [BonusController::class, 'index'])->name('bonuses.index');
     Route::get('/bonus/create', [BonusController::class, 'create'])->name('bonus.create');
     Route::post('/bonus/create', [BonusController::class, 'store'])->name('bonus.store');
+    Route::put('/bonus/{id}/update', [BonusController::class, 'update'])->name('bonus.update');
     Route::delete('/bonus/{id}/delete', [BonusController::class, 'delete'])->name('bonus.delete');
 
     Route::get('/cadences/index', [CadenceController::class, 'index'])->name('cadences.index');

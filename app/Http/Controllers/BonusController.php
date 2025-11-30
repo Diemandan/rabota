@@ -32,19 +32,21 @@ class BonusController extends Controller
 
     public function store(BonusRequest $request)
     {
-        if ($request->validated()) {
-            $this->bonusService->create($request);
+        $this->bonusService->create($request);
+        return redirect()->route('bonuses.index')->with('success', 'Корректировка успешно добавлена.');
+    }
 
-            return redirect()->route('bonuses.index')->with('success', 'Payment added successfully.');
-        }
-
-        return redirect()->back()->withErrors($request->errors())->withInput();
+    public function update(BonusRequest $request, int $id)
+    {
+        $request->merge(['id' => $id]);
+        $this->bonusService->update($request);
+        return redirect()->route('bonuses.index')->with('success', 'Корректировка успешно обновлена.');
     }
 
     public function delete($id)
     {
         $this->bonusService->delete($id);
-        return redirect()->route('bonuses.index')->with('success', 'Payment deleted successfully.');
+        return redirect()->route('bonuses.index')->with('success', 'Корректировка успешно удалена.');
     }
 
 }

@@ -34,19 +34,13 @@ class BudgetController extends Controller
 
     public function store(BudgetRequest $request)
     {
-        if ($request->validated()) {
-            $this->service->create($request);
-
-            return redirect()->route('budget.index')->with('success', 'Expense added successfully.');
-        }
-
-        return redirect()->back()->withErrors($request->errors())->withInput();
+        $this->service->create($request);
+        return redirect()->route('budget.index')->with('success', 'Запись бюджета успешно сохранена.');
     }
 
     public function delete(int $id)
     {
         $this->service->delete($id);
-        return redirect()->route('budget.index')->with('success', 'Payment deleted successfully.');
-
+        return redirect()->route('budget.index')->with('success', 'Запись бюджета успешно удалена.');
     }
 }

@@ -40,4 +40,15 @@ class ExpenseService
         $this->expenseRepository->create($data);
     }
 
+    public function update(ExpenseRequest $request): void
+    {
+        $data = $request->except('_token');
+        $this->expenseRepository->update($data);
+    }
+
+    public function find(int $id)
+    {
+        return $this->expenseRepository->find($id);
+    }
+
 }

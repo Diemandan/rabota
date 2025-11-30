@@ -43,9 +43,20 @@ class SalaryService
 
     }
 
+    public function update(SalaryRequest $request): void
+    {
+        $data = $request->except('_token');
+        $this->salaryRepository->update($data);
+    }
+
     public function delete($id): void
     {
         $this->salaryRepository->delete($id);
+    }
+
+    public function find(int $id)
+    {
+        return $this->salaryRepository->find($id);
     }
 
 }

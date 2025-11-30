@@ -22,9 +22,10 @@ class BudgetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cash' => 'required|integer',
-            'month' => 'required|string',
-            'title' => 'required|string|min:5'
+            'id' => 'sometimes|integer|exists:budgets,id',
+            'cash' => 'required|numeric|min:0.01',
+            'month' => 'required|string|date_format:Y-m',
+            'title' => 'required|string|min:3|max:500'
         ];
     }
 }

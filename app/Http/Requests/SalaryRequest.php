@@ -22,9 +22,10 @@ class SalaryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => 'sometimes|integer|exists:salaries,id',
             'cadence_id' => 'required',
-            'transfer_date' => 'required',
-            'transfer_amount' => 'required|min:1|not_in:0',
+            'transfer_date' => 'required|date',
+            'transfer_amount' => 'required|numeric|min:0.01',
         ];
     }
 }

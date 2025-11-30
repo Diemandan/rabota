@@ -22,10 +22,11 @@ class BonusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cadence_id' => 'required',
-            'transfer_date' => 'required',
-            'transfer_amount' => 'required|min:1|not_in:0',
-            'description' => 'nullable|required'
+            'id' => 'sometimes|integer|exists:bonuses,id',
+            'cadence_id' => 'required|integer|exists:cadences,id',
+            'transfer_date' => 'required|date',
+            'transfer_amount' => 'required|numeric|min:0.01',
+            'description' => 'nullable|string|max:500'
         ];
     }
 }
