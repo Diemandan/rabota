@@ -53,8 +53,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(StatisticService::class, function ($app) {
             return new StatisticService(
-                $app->make(CadenceRepository::class),
-                $app->make(SalaryRepository::class),
+                new CadenceRepository(new Cadence()),
+                new SalaryRepository(new Salary()),
+                $app->make(SalaryService::class),
                 $app->make(BonusService::class),
                 $app->make(ExpenseService::class)
             );
