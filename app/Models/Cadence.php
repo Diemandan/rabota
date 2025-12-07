@@ -9,7 +9,7 @@ class Cadence extends Model
 {
     use HasFactory;
 
-    public const DEFAULT_DAILY_RATE = 80;
+    public const DEFAULT_DAILY_RATE = 85;
 
     protected $fillable = [
         'daily_rate',
