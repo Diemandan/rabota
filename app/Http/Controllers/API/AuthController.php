@@ -12,30 +12,40 @@ class AuthController extends Controller
 {
     public function login(Request $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        if (!Auth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => ['Неверные учетные данные.'],
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string',
             ]);
+
+            $credentials = $request->only('email', 'password');
+
+            if (!Auth::attempt($credentials)) {
+                return response()->json([
+                    'message' => 'Неверные учетные данные.',
+                    'errors' => [
+                        'email' => ['Неверные учетные данные.'],
+                    ],
+                ], 401);
+            }
+
+            $user = Auth::user();
+            $token = $user->createToken('mobile-app')->plainTextToken;
+
+            return response()->json([
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+                'token' => $token,
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Ошибка валидации',
+                'errors' => $e->errors(),
+            ], 422);
         }
-
-        $user = Auth::user();
-        $token = $user->createToken('mobile-app')->plainTextToken;
-
-        return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
-            'token' => $token,
-        ]);
     }
 
     public function logout(Request $request): JsonResponse
