@@ -28,9 +28,9 @@ class ExpenseService
         $this->expenseRepository->delete($id);
     }
 
-    public function getExpenses(): LengthAwarePaginator
+    public function getExpenses(?int $id = null): LengthAwarePaginator
     {
-        return $this->expenseRepository->getAll();
+        return $id ? $this->expenseRepository->getByCadence($id) : $this->expenseRepository->getAll();
     }
 
     public function create(ExpenseRequest $request): void

@@ -48,4 +48,9 @@ class ExpenseRepository
     {
         return $this->model->with('cadence')->latest()->paginate(self::PER_PAGE);
     }
+
+    public function getByCadence(int $id): LengthAwarePaginator
+    {
+        return $this->model->where('cadence_id', $id)->with('cadence')->latest()->paginate(self::PER_PAGE);
+    }
 }
