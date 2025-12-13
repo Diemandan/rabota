@@ -18,7 +18,7 @@ class ExpenseController extends Controller
 
     public function index(): JsonResponse
     {
-        $cadenceId = request()->input('Cadence_id');
+        $cadenceId = request()->input('cadence_id');
         $expenses = $this->expenseService->getExpenses($cadenceId ? (int) $cadenceId : null);
 
         return response()->json($expenses);
